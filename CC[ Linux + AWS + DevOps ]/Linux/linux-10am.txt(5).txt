@@ -1,0 +1,384 @@
+Before Linux – The UNIX Era
+In the 1960s, computer scientists at Bell Labs (including Ken Thompson and Dennis Ritchie) created an operating system called UNIX.
+UNIX was multi-user and multitasking, meaning multiple people could use the same computer at once, and it could run several programs simultaneously.
+UNIX was not free – companies had to pay for it.
+
+
+2. The Problem
+By the 1980s, UNIX had become very popular, but different companies were making their own versions, which caused compatibility issues.
+Also, since UNIX was proprietary (paid software), not everyone could afford to use it.
+
+3. The Birth of Free Software
+In the 1980s, Richard Stallman started the Free Software Movement.
+He launched the GNU Project to create a free UNIX-like operating system.
+GNU provided many tools (like compilers, editors, and shells), but it was missing a critical piece – the kernel (the core of the operating system).
+
+4. The Arrival of Linux (1991)
+In 1991, a Finnish student named Linus Torvalds wanted to create a free alternative to MINIX (a small UNIX-like system used for teaching).
+Linus wrote a new kernel from scratch and called it Linux.
+He shared it online with the open-source community, and developers around the world started contributing.
+
+5. Linux + GNU = Full Operating System
+Developers combined Linus' Linux kernel with GNU tools, creating a complete operating system.
+This is why sometimes Linux is referred to as GNU/Linux.
+
+6. Linux Today
+Linux powers:
+
+Servers (most of the internet runs on Linux)
+Supercomputers
+Android phones (Android is based on the Linux kernel)
+IoT devices
+Personal computers (through distributions like Ubuntu and Fedora)
+
+Linux is known for being:
+
+Free and open source
+Customizable
+Stable and secure
+Why is Linux Important?
+Cost-effective: No need to pay for licenses.
+Reliable: Runs for long periods without crashing.
+Flexible: Used in many industries (banking, healthcare, tech).
+=========================================================================================================================
+1. What is Booting?
+Booting is the process of starting your computer and loading the operating system (like Red Hat or Windows) so you can use it.
+
+Think of it like waking up a sleeping person – the computer goes from being off to fully awake and ready to work.
+
+Step 1: Press the Power Button
+This sends electricity to the computer’s parts (like the CPU, RAM, and motherboard).
+The computer wakes up and starts checking if everything is working.
+
+Step 2: POST (Power-On Self Test)
+The computer quickly checks if the hardware (keyboard, mouse, RAM, CPU) is okay.
+If something is wrong (like RAM is missing), the computer beeps or shows an error.
+If everything is fine, the boot continues.
+👉 Analogy: Imagine checking if your shoes and clothes are ready before heading out.
+
+Step 3: BIOS/UEFI (Basic Input/Output System)
+BIOS (or UEFI for newer computers) is a small program stored on a chip inside the computer.
+It controls basic functions and knows how to talk to hardware.
+BIOS looks for a bootable device – like a hard disk, USB, or CD.
+👉 Analogy: BIOS is like the brain's reflexes – it knows how to control basic body parts.
+
+Step 4: MBR (Master Boot Record)
+The BIOS hands over control to the first part of the hard drive called the MBR.
+The MBR contains a tiny program that finds and loads the bootloader.
+👉 Analogy: Think of MBR as a door to a building – it opens the way to the main entrance (bootloader).
+
+Step 5: GRUB (Grand Unified Bootloader)
+GRUB is a special program that loads the operating system (Linux).
+It shows a menu asking you to choose which operating system to load (if you have more than one).
+After you choose, it loads the Linux kernel.
+👉 Analogy: GRUB is like a restaurant menu – you choose what you want to eat (or which OS to load).
+
+Step 6: Linux Kernel Loads
+The Linux kernel is the heart of the operating system.
+It gets loaded into the computer’s memory (RAM) and starts controlling the hardware.
+The kernel then starts the init system (like SYSTEMD), which turns on services (like networking, user logins, etc.).
+👉 Analogy: The kernel is like a manager who controls the staff (hardware and services).
+
+Step 7: Login Screen Appears
+After loading all services, the computer shows the login screen.
+Now you can enter your username and password to start using the computer.
+👉 Analogy: This is like reaching the front door of your house, unlocking it, and stepping inside.
+
+Power On → POST → BIOS/UEFI → MBR → GRUB → Kernel → Services → Login  
+====================================================================================================================
+
+What are the flavours in Linux
+
+ubuntu
+redhat
+centos
+Debian
+fedora 
+===============================================================================
+Linux : Linux is an open source os, which directly manages a system's hardware and resources like CPU, storage and memory.
+
+The Linux kernel: 
+is the core component of the Linux operating system (OS) that acts as an interface between the computer's hardware and its processes. It's the first thing to load when a computer boots up and remains in the computer's memory throughout a session.
+
+A shell is a program that allows users to interact with a Linux operating system (OS) by typing commands
+
+Flavours of linux :
+1. ubuntu
+2. Debian
+3. Fedora (RHEL)
+4. Linux mint
+
+why Linux:
+1-->open source
+2-->highly secure
+3-->Easy to use
+4-->cheaper compare windows systems
+==================================================================================================
+
+clear: used to clear the screen
+
+touch <filename> : It is used create empty file.
+ls : It is used to list the files and directories.
+ls -l/ll : It is used to list the files and directories in long format.
+ls -lt : It is used to list the files and directories in long format with recently modified file on the top.
+ls -lrt : It is used to list the files and directories in long format with recently modified file on the bottom.
+ls -a : It is used to list hidden files with other files and directories
+ls -al/ll : It is used to list hidden files in long format.
+
+mkdir <dirname> : It is used to create directory(folder).
+mkdir -p dir1/dir2/dir3/   to create nested directories.
+tree--> directory structure can be viewed.
+cd <dirname> : cd(change directory) is used to get into the directory.
+cd ../ : It is used to come out of the directory one level.
+pwd (Present working directory) : It is used to check the location.
+history: it prints all the previous commands you used
+=============================================================================
+==============================================================================
+
+vi <filename> : It is used to open file in editor mode
+ i : It is used get into insert mode.
+esc :wq! : It is used to save and quit the file.
+esc :q! : It is used to quit the file without saving.
+cat <filename>: it is  used to print the content of a file
+esc :set number : It is used to set line number to a file
+esc :set nonu : It is used to remove the line number.
+esc dd --To delete the content of the file . whereever cusrser is present that line will be deleted.
+esc u-->to undo inside vi editors
+
+nano editor:
+nano <filename>
+ctrl+x y enter
+
+
+
+Replace a string : It is used to replace a string in a file.
+
+syn : esc   :%s/str1/str2/g
+       s - substitute g - globally.
+
+1. esc:1 s/str1/str2/g : It is used to replace str1 to str2 everywhere in the 1st line.
+2. esc:1,3 s/str1/str2/g : It is used to replace str1 to str2 from 1st to 3rd line.
+
+3. esc:/string : It will move the cursor to the 1st occurence of a str and if you keep pressing "n" It will move to the 2nd occurrence and so on.
+
+4. esc dd : It deletes whole line in the file.
+
+5. esc:5,$ s/str1/str2/g : It is used to replace the str from 5 to end of the line.
+6. esc:u--> used to run undo in the vi editor
+
+cat <filename> : It is used to print the content of a file on the console.
+
+
+rm <filename> : It is used to delete the file.
+rm -rf <dirname> : It is used to delete directory.
+                   r - recursively f - forcefully
+
+sudo bash, sudo su: to login as root user
+sudo : For super user permissions
+root : is the admin user created by os
+
+cp (copy): It is used to copy the content from source file to the destination file.
+           If destination file doesn't exists it will create new file and copies the content.
+		   If destination file exists it will override the content of a file.
+		   syn : cp <source path/file> <destination path/file>
+
+cp -r <source file pah> <destination path>---> to copy directory
+
+mv (move) : It is used to move the data from one file to another file, here source file will get deleted and moves the
+            content to the destination file		
+           syn : mv <source file> <destination file>
+Note : mv is also used to rename a file.
+
+
+
+WC(word count) : It is used to count the number of lines, words, and characters in the file.
+            syn : wc <filename>
+wc -l <filename> : It is used to print number of lines in the file.
+wc -w <filename> : It is used to print number of words in the file.
+wc -c <filename> : It is used to print number of characters in the file
+============================================================================
+echo "i am printing"-->print anything after the echo command 
+echo --print the content
+syntax: echo "i am shreedevops engineer"
+
+
+Redirect (>) : It is used to write the o/p of one command to a destination file.
+               If destination file exists it will override the content of destination file.
+			   If destination file doesn't exists it will create new file and redirects the o/p.
+
+ syn : ex : echo "stmt" > <destination file>
+
+Append (>>) : It is used to write the o/p of one command to a destination file.
+               If destination file exists it will not override the content of destination file.it will paste into the bottom of destination file
+			   syn : ex: echo "stmt" >> <destination file>.
+===========================================			   
+
+===================================================================
+du -sh : It is used to find disk usage.
+df -h : It is used to check the size of a drive.
+free -m -- used to check CPU memory of the server
+top-->used to check the processes using memory.
+
+
+There are many types shells available
+1. bash
+2. kshell
+3. cshell
+
+how to check shell available
+cat /etc/shells
+
+1. How to show the current shell?
+echo $SHELL
+
+To check all the env vars 
+type command "env"
+==============================================================================
+pipe (|):It is used to give the o/p of one command as input to other command.
+
+for eg: cat f1 | wc -l 
+        cat filename.txt | wc -w
+        ls -l | wc -l
+        
+       cat filename | xargs touch ---> create files as many words in the file1
+       cat filename | xargs rm
+
+Write a command to delete recent 5 files--Assignment
+
+
+Head and tail command
+Head : 
+It is used to display first part of a file, by default it will display first 10 lines.
+syn : Head <Filename>
+Tail : 
+It is used to display last part of a file, by default it will display last 10 lines.
+syn : tail <Filename>
+For eg :
+1. head -15 <filename> : It is used to print first 15 lines of a particular file.
+2. tail -2 <filename> : It is used to print last 2 lines of a file.
+3. head -5 <filename> | tail -1 : It is used to display 5th line of file.
+4. head -5 <filename> | tail -3 : It is used to display 3 to 5th line of file.
+
+Assignment : How to print last 2nd line of a file.
+
+learn more and less command 
+explain me the difference with head and tail command 
+==========================================================================
+=============================================
+How to change file and directory permissions
+=============================================
+chmod(change mode) : It is used change permissions for files and directories.
+
+we have 3 kind of categories
+r - read - 4
+w - write - 2
+x - execute - 1
+
+we have 3 kinds groups
+users
+group
+others
+
+For ex : Changing permissions for file
+1. If you want to give all permissions for user, group or others/ for a particular file
+
+                users group others
+  for file f1 - r+w+x r+w+x r+w+x
+                4+2+1 4+2+1 4+2+1
+	          7     7     7
+
+syn : chmod 777 <filename>
+
+2. If you want to give only read permission for user, write permission for group, and read and execute permission for others to f3 file
+        users group others
+  f3 - r w r+x
+       4 2 4+1
+	4 2 5
+		syn : chmod 425 <filename>
+
+For ex: Changing permission for directory
+1.  If you want to give all permissions for user, group or others/ particular directory
+	   users group others
+  f3 - r+w+x r+w+x r+w+x
+       4+2+1 4+2+1 4+2+1
+	     7     7     7	
+		 syn : chmod -R 777 <directory name>
+Note : Can you add or remove the permissions for user group or others without using binary format?
+       - yes
+	   For eg : chmod u+x,g+w,o-r <filename>
+	   For eg : chmod u-wx,g+rx,o+rw <filename>
+	   For eg : chmod a+rwx <filename>
+	   
+Note : TO perform this operation we need to have root previledges
+To become root we need to use sudo
+
+chown(change ownership) :It is used to change the ownership of a file/dir1
+syn : sudo chown <newownername> <filename>
+      sudo chown -R <newownername> <directoryname>
+	  
+chgrp(change groupname): It is used to change groupname for files/dir1
+syn : sudo chgrp <newgroupname> <filename>
+      sudo chgrp -R <newgroupname> <dirname>
+=====================================================
+sudo useradd <username> : It is used to create user.
+sudo passwd <username>: it will promt to create a password(enter twice same password)
+sudo userdel <username> : It is used to delete user.
+sudo groupadd <groupname> : It is used to create group.
+sudo groupdel <groupname> : It is used to delete group.
+sudo useradd -m -s /bin/bash username (command to create user with home directory)
+sudo usermod -l new_username old_username(to modify the username)
+sudo chsh -s /bin/bash <username>
+adduser-->create user ,home dir at once 
+sudo usermod -aG groupname username--> to add user into the group
+sudo cat /etc/group  --> to view list of users in a group
+cut -d: -f1 /etc/passwd---> to check the list of users
+cut -d: -f1 /etc/group--> to see list of groups
+
+to switch as created user
+su <username>
+exit    to come out of user
+============================================================================
+============================================================================
+getfacl is used to display the current ACLs set on files or directories.
+syntax : getfacl file.txt
+
+setfacl -m u:username:rwx file.txt
+setfacl -m g:groupname:r-x file.txt
+setfacl -m d:u:username:rwx dir/
+
+===================================
+
+Passwordless connection between 2 servers
+=====================================================
+Step 1 - create 2 servers 
+   run following commands after ssh into them
+   sudo hostnamectl set-hostname server1-----on server 1
+   sudo hostnamectl set-hostname server2-----on server2
+   go to server1 
+   cd .ssh/ 
+step 2 - Run "ssh-keygen -t rsa" on server1
+         type enter for all the options(3 times)
+         check for the creation of id_rsa and id_rsa.pub files
+         cat id_rsa.pub
+
+step 3 - copy generated pub key from server 1 and paste it into server2's authorized_keys file 
+         goto server2 
+         cd .ssh/
+         echo "copied public key from server1" >> authorized_keys
+         
+step 4 - change permission for authorized_keys file in server2 to 700
+step 5 - Run ssh username@server2_publicip to make passwordless connection between 2 servers.
+
+            ssh ec2-user@65.0.32.193
+
+
+
+Edit if required
+
+sudo vi /etc/ssh/sshd_config
+change passwordauthentication to yes 
+sudo systemctl restart sshd
+
+===================================================================================================================================
+
+
