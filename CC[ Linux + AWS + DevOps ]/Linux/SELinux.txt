@@ -1,0 +1,43 @@
+Introduction to SELinux(Security-Enhanced Linux (SELinux)
+=========================================================
+SELinux is a security architecture for Linux that uses mandatory access control (MAC) to enforce rules on processes and files.
+It enhances security by limiting how applications can interact with the system.
+
+SELinux adds an extra layer of security by enforcing policies defined by the system administrator, even if the user or program has root privileges.
+
+check SELinux Status using the command 
+
+ "sestatus" 
+
+This command will show whether SELinux is enabled and its current mode (enforcing, permissive, or disabled).
+========================================================================================================
+Importance of SELinux
+=======================
+SELinux prevents unauthorized processes from accessing files and directories, limiting the scope of potential damage from exploits or malware.
+It’s especially important for systems that run public-facing applications, like web servers, as it reduces the attack surface.
+==============================================================================================================================
+SELinux Modes--can be checked using the command "sestatus"
+==============
+1.Enforcing: SELinux policies are applied, and unauthorized actions are blocked.
+2.Permissive: SELinux is active but doesn’t block actions. Instead, it logs policy violations (useful for debugging).
+3.Disabled: SELinux is turned off, and no policies are applied.
+
+on ubuntu
+===========
+sudo apt update
+sudo apt install selinux-basics selinux-policy-default auditd -y
+sudo selinux-activate
+sudo reboot
+
+
+Switch to permissive mode command-->sudo setenforce 0
+Switch back to enforcing-->sudo setenforce 1
+
+The SELinux configuration file /etc/selinux/config where permanent changes are made:
+
+sudo vi /etc/selinux/config
+sudo reboot 
+
+after making the changes
+====================================================================================================================================================
+

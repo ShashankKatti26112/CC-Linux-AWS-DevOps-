@@ -1,0 +1,105 @@
+🛠️ Prerequisites
+=====================
+2 Amazon Linux EC2 instances:3
+NFS Server (shares folder)
+NFS Client (accesses the shared folder)
+Both instances should be in the same VPC and security group.
+Security Group Rule: Allow inbound traffic on port 2049 (NFS).
+================================================================================
+1. Set Up the NFS(Network file system) Server (EC2 Instance 1)
+Connect to the NFS Server instance via SSH:
+
+sudo hostnamectl set-hostname NFS-SERVER
+
+Install NFS server packages:
+
+sudo yum update -y
+sudo yum install -y nfs-utils
+
+sudo apt update -y(on ubuntu)
+sudo apt install nfs-common nfs-kernel-server(on ubuntu)
+======================
+Create a directory to share: on server 
+
+sudo mkdir /nfs_share
+sudo chown -R nobody:nobody /nfs_share
+sudo chmod 777 /nfs_share
+=====================================
+Configure NFS exports:
+
+sudo nano /etc/exports
+=======================
+Add this line to share the folder with clients:
+
+/nfs_share *(rw,sync,no_root_squash)    
+
+to exit from nano editor ctrl+x, y, then press enter
+
+rw – Read/write access
+sync – Writes data immediately
+no_root_squash – Allows root access from clients (use carefully)
+===================================
+Start and enable the NFS service:
+
+sudo systemctl enable nfs-server
+sudo systemctl start nfs-server
+=====================================
+Export the shared folder:
+
+sudo exportfs -rav
+==============================
+Verify NFS is running:
+
+
+sudo systemctl status nfs-server
+==================================================================================
+=================================================================
+2. Set Up the NFS Client (EC2 Instance 2)
+Connect to the NFS Client instance via SSH:
+
+ssh -i your-key.pem ec2-user@<client-ip>
+=====================================
+Install NFS client packages:
+
+sudo hostnamectl set-hostname NFS-CLIENT
+sudo yum update -y
+sudo yum install -y nfs-utils
+
+===========================================
+Create a mount point for the shared folder:
+
+sudo mkdir /mnt/nfs_mount
+===========================================
+Mount the NFS share from the server:
+
+sudo mount <NFS-SERVER-pulicip>:/nfs_share /mnt/nfs_mount
+================================================
+Verify the mount:
+
+df -h
+ls /mnt/nfs_mount
+========================================
+Test the NFS Setup
+On the NFS Server, create a test file:
+
+sudo touch /nfs_share/testfile.txt
+=============================
+On the NFS Client, check the file:
+
+ls /mnt/nfs_mount
+➡️ You should see testfile.txt.
+========================================
+
+4. Automatically Mount NFS at Boot (Client)
+Edit the /etc/fstab file on the client:
+
+sudo nano /etc/fstab
+Add this line to auto-mount on boot:
+
+<server-ip>:/nfs_share /mnt/nfs_mount nfs defaults 0 0
+
+============================
+Test the configuration:
+To remove 
+sudo umount /mnt/nfs_mount
+sudo mount -a

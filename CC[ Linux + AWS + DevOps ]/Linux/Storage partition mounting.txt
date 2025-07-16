@@ -1,0 +1,89 @@
+In Linux, storage devices (like hard drives) are used to store data. 
+Managing storage involves understanding how to format, partition, and use these devices.
+
+===============================
+Understanding File Systems
+===============================
+
+A file system is the structure that defines how data is stored on your storage device. Here are the common file systems:
+
+ext2: The older version of the Linux file system, no journaling, slower in recovery.
+ext3: An improvement over ext2, adds journaling, which helps in recovering from crashes.
+ext4: The latest in the ext family, with faster performance and large storage support.
+xfs: High-performance file system, often used in enterprise servers.
+btrfs: A modern file system with advanced features like snapshots and self-healing.
+
+
+lsblk  -->This will show you the list of devices, partitions, and their sizes.
+
+you have an 8GB disk (/dev/xvda) already partitioned,
+
+NAME      MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS
+xvda      202:0    0   8G  0 disk
+├─xvda1   202:1    0   8G  0 part /
+├─xvda127 259:0    0   1M  0 part
+└─xvda128 259:1    0  10M  0 part /boot/efi
+
+
+Columns:
+NAME: The name of the device (or partition).
+MAJ
+: Major and minor device numbers used by the Linux kernel.
+RM: Indicates whether the device is removable (0 means not removable, 1 means removable).
+SIZE: The size of the device or partition.
+RO: Read-Only status (0 means it's writable, 1 means it's read-only).
+TYPE: Type of device (e.g., disk for full drives, part for partitions).
+MOUNTPOINTS: The directory where the partition is mounted in the file system.
+
+==============================================================================================================================================
+===============================================================================================================================================
+
+Create a new volume in AWS console and attach it to a instance 
+
+lsblk
+
+check new volume listed
+=======================
+Partition the New Disk
+=======================
+You can use fdisk for partition the new disk.
+
+sudo fdisk /dev/xvdb
+
+Type n to create a new partition.
+Choose p for a primary partition.
+Press Enter to accept the default partition number.
+Press Enter to accept the default first sector.
+Press Enter again to accept the default last sector (using the entire disk).
+Type +1G and press Enter
+👉 This creates a 1 GB partition.
+
+Type w to write the changes to the disk and exit fdisk.
+
+check new partition lsblk command
+
+=============================================
+Once the partition is created, it needs to be formatted with a file system. Let's format the partition with the ext4 file system.
+
+sudo mkfs.ext4 /dev/xvdd2
+==========================================
+You need to create a directory where the partition will be mounted. This is called the mount point.
+
+sudo mkdir /mnt/newdisk
+
+Now, mount the partition to the directory you just created.
+
+sudo mount /dev/xvdd2 /mnt/newdisk
+=====================================================================
+To ensure the partition is automatically mounted at boot, you need to add it to the /etc/fstab file.
+
+sudo vi /etc/fstab
+
+/dev/xvdb1  /mnt/newdisk  ext4  defaults,nofail  0  2
+
+
+check df -h
+
+
+
+

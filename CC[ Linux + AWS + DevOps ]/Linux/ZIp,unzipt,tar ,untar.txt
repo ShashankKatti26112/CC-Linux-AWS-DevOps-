@@ -1,0 +1,141 @@
+Command	Description	                       Compression Format
+======  ====================================   =====================
+zip	Compress and create a zip archive	.zip
+unzip	Extract files from a zip archive	.zip
+gzip	Compress a file	                        .gz
+gunzip	Decompress a gzipped file	        .gz
+tar	Archive multiple files and directories	.tar
+tar.gz	Archive and compress with gzip	        .tar.gz
+
+zip Command:
+The zip command is used to compress files and create a .zip archive.
+
+syntax: zip [options] archive_name.zip file1 file2 ...
+        zip archive.zip file1.txt file2.txt file3.txt
+        zip -r archive.zip directory_name/     (he -r option compresses the entire directory recursively.)
+
+View Zip Archive Contents:
+  unzip -l archive.zip
+
+Extract Files from Zip Archive:
+unzip archive.zip
+
+zip -u file.zip newfile1 file2-->add files to existing zip file
+zip -d file.zip newfile1 file2-->to remove some files form the zip
+============================================================
+
+gunzip Command: the gunzip command is used to compress and  decompress .gz files.
+
+Compress a File using gzip: gzip file.txt
+
+Decompress a Gzipped File:gunzip file.txt.gz
+
+Keep the Original File After Compression: Use gzip with the -k option to keep the original file.:gzip -k file.txt
+==================================================================
+
+tar Command:
+
+The tar command is used for creating and extracting archive files. It's commonly used with gzip and bzip2 to create .tar.gz or .tar.bz2 files, which are tarballs that have been compressed.
+
+tar [options] archive_name.tar file1 file2 ...
+
+Options:
+-c: Create a new archive.
+-x: Extract files from an archive.
+-v: Verbose, shows the process.
+-f: Specify the filename of the archive.
+-z: Use gzip compression (.tar.gz).
+-j: Use bzip2 compression (.tar.bz2).
+
+Create a Tarball Archive:
+tar -cvf archive.tar file1 file2-->This creates archive.tar containing file1 and file2.
+
+Create a Compressed Tarball Using Gzip (.tar.gz):
+tar -czvf archive.tar.gz directory_name/
+
+Extract a Tarball Archive (.tar):
+tar -xvf archive.tar
+
+
+Extract a Gzipped Tarball (.tar.gz):
+tar -xzvf archive.tar.gz
+====================================================================================================================
+
+
+The installation packages and package management systems differ across Ubuntu, CentOS, and Red Hat Enterprise Linux (RHEL) due to their distinct Linux distributions and package formats. 
+
+Ubuntu
+======
+
+Package Manager:
+APT (Advanced Package Tool): Used for managing .deb packages.
+Commands:
+sudo apt update (Update package lists)
+sudo apt upgrade (Upgrade installed packages)
+sudo apt install [package_name] (Install a package)
+sudo apt remove [package_name] (Remove a package)
+sudo apt search [package_name] (Search for a package)
+
+example: sudo apt update
+         sudo apt upgrade
+         sudo apt install nginx
+         sudo apt remove nginx
+
+CentOS and RHEL
+==============
+Package Format: .rpm (Red Hat Package Manager)
+
+Package Manager:
+YUM (Yellowdog Updater Modified): Traditional package manager for CentOS/RHEL before version 8.
+Commands:
+sudo yum update (Update all packages)
+sudo yum install [package_name] (Install a package)
+sudo yum remove [package_name] (Remove a package)
+sudo yum search [package_name] (Search for a package)
+   sudo yum update
+   sudo yum install nginx
+   sudo yum remove nginx
+
+
+DNF (Dandified YUM): Default package manager in CentOS/RHEL 8 and later.
+Commands:
+sudo dnf update (Update all packages)
+sudo dnf install [package_name] (Install a package)
+sudo dnf remove [package_name] (Remove a package)
+sudo dnf search [package_name] (Search for a package)
+
+  sudo dnf install nginx
+  sudo dnf remove nginx
+
+
+RPM (Red Hat Package Manager): Lower-level package management tool.
+Commands:
+sudo rpm -i [package_name.rpm] (Install an .rpm package)
+sudo rpm -e [package_name] (Erase/uninstall a package)
+sudo rpm -q [package_name] (Query package information)
+
+
+rpm -q nginx(check nginx exist)  
+sudo rpm -i package_name.rpm(install)
+sudo rpm -U package_name.rpm(update)
+
+Installing Java
+wget https://download.oracle.com/java/17/latest/jdk-17_linux-x64_bin.rpm
+sudo rpm -i jdk-17_linux-x64_bin.rpm
+
+
+mysql
+wget https://dev.mysql.com/get/mysql80-community-release-el8-3.noarch.rpm
+sudo rpm -i mysql80-community-release-el8-3.noarch.rpm
+sudo yum install mysql-server
+
+
+
+
+
+
+
+
+
+
+
