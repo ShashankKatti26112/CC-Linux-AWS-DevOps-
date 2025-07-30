@@ -1,0 +1,31 @@
+
+AWS Identity and Access Management (IAM)
+
+AWS Identity and Access Management (IAM) allows you to control access to compute, storage, database, and application services in the AWS Cloud. IAM can be used to handle authentication, and to specify and enforce authorization policies so that you can specify which users can access which services.
+
+With IAM, you can manage:
+● Who can access the resources
+● Which resources can be accessed
+● How these resources can be accessed
+
+
+in-line policy-->a custom policy crated by users 
+
+
+
+
+| **Feature**               | **Roles**                                                 | **Policies**                                                                                                    |
+| ---------------------------------------------------------------------------------------------------| --------------------------------------------------------------------------------------------------------------- |
+| **Identity**   | An AWS identity that can be assumed by others                        | A JSON document that defines permissions                                                                        |
+| **Permissions**| Roles themselves don't have permissions. They are granted permissions through policies. | Explicitly defines what actions are allowed or denied                                                           |
+| **Assumption** | Assumed by users, applications, or AWS services to access resources  | Attached to IAM identities (users, groups, roles) or AWS resources                                              |
+| **Temporary Credentials** | When a role is assumed, it grants temporary credentials   | Defines what actions can be performed with those credentials                                                    |
+| **Purpose**    | To grant temporary access to AWS resources for specific entities (users, applications, or services) | To define the specific permissions that are granted                                               to                                                                                         an entity (user, group, or role) to access AWS resources |
+
+
+Example:
+
+A role might allow an EC2 instance to access an S3 bucket.
+
+A policy might grant permission to create new EC2 instances in a specific VPC.
+
