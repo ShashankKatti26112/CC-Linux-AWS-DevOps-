@@ -1,0 +1,138 @@
+Load Balancing and Auto Scaling are both important components in a cloud infrastructure for improving availability, performance, and scalability, but they serve different purposes:
+
+Load Balancing:
+=================
+
+Purpose: Distributes incoming traffic across multiple servers (or instances) to ensure no single server is overwhelmed by requests.
+
+Key Features:
+Distributes Traffic: It helps spread traffic evenly across a pool of instances or servers, improving overall system performance.
+High Availability: By routing traffic to healthy instances, load balancers help maintain system uptime and minimize downtime.
+Session Persistence: Some load balancers can stick user sessions to a particular instance (session affinity) to maintain user experience.
+Types:
+
+1. Application Load Balancer (ALB)
+Layer: Operates at Layer 7 (Application Layer) of the OSI model.
+Purpose: Used for routing HTTP and HTTPS traffic and is more sophisticated, allowing routing decisions based on the content of the request, such as URL paths, HTTP headers, HTTP methods, and even query strings.
+
+2. Network Load Balancer (NLB)
+Layer: Operates at Layer 4 (Transport Layer) of the OSI model.
+Purpose: Designed to handle high throughput and low latency traffic, especially for TCP and UDP traffic. It is highly scalable and best for extreme performance needs.
+
+3.Gateway Load Balancer (GLB)
+Layer: Operates at both Layer 4 (Transport Layer) and Layer 7 (Application Layer), though its functionality is limited compared to ALB and NLB.
+Purpose: This is the legacy load balancer in AWS, primarily used to balance HTTP/HTTPS and TCP traffic across multiple instances.
+===========================================================================================================
+Auto Scaling:
+Purpose: Dynamically adjusts the number of servers (or instances) in your infrastructure based on the current load and predefined scaling policies.
+Key Features:
+
+==================================================================================================
+Automatic Scaling: Auto Scaling can increase or decrease the number of instances depending on the traffic load (scaling up or scaling down).
+Cost Efficiency: Helps save costs by ensuring you only use the resources you need during low-demand periods, while automatically scaling up during high-demand.
+Health Checks: Auto Scaling can terminate unhealthy instances and launch new ones to maintain the desired instance count.
+Scaling Policies: Can be based on metrics like CPU utilization, request count, or even custom CloudWatch metrics.
+Key Differences:
+Functionality:
+
+Load balancing distributes traffic across multiple instances to balance the load.
+Auto Scaling automatically adjusts the number of instances based on demand.
+Focus:
+
+Load balancing focuses on optimizing performance and availability by efficiently distributing traffic.
+Auto Scaling focuses on adjusting infrastructure capacity dynamically to meet demand while reducing costs.
+
+Interaction:
+
+They often work together in a cloud environment. Auto Scaling ensures the correct number of instances are running, while load balancers distribute traffic across those instances.
+
+============================
+Launch 2 ec2 amazon-Linux
+=============================
+install httpd on both servers
+=============================
+sudo yum install -y httpd   
+sudo systemctl start httpd
+sudo systemctl enable httpd
+
+echo "<h1>This is WebServer1</h1>" | sudo tee /var/www/html/index.html -----> on server1
+
+echo "<h1>This is WebServer2</h1>" | sudo tee /var/www/html/index.html  ------->on server2
+
+
+Now, if you access the public IP of each EC2 instance in your browser (e.g., http://your-ec2-public-ip), you’ll see different content on each instance.
+=========================================================================================================================================================
+
+Step 2: Creating an Elastic Load Balancer (ALB)
+
+Why?
+An Elastic Load Balancer (ALB) distributes incoming traffic across multiple EC2 instances, ensuring that no single instance is overloaded. This helps ensure high availability and reliability.
+
+How?
+Go to EC2 Dashboard > Load Balancers > Create Load Balancer.
+Choose Application Load Balancer.
+
+Configure Load Balancer Settings:
+Name: MyLoadBalancer.
+Scheme: Internet-facing (for public access).
+Listeners: Keep HTTP (port 80).
+Availability Zones: Select the VPC and the subnets where your EC2 instances are running.
+
+Configure Security Groups:
+Assign the same security group as your EC2 instances, allowing HTTP access.
+
+Configure Target Group:
+Create a new target group for your EC2 instances. Select Instances as the target type.
+Register your running EC2 instances.
+
+Review and Create: Once the load balancer is created, copy the DNS name of the load balancer (you’ll use this to access your application).
+
+Test Your Load Balancer:
+
+Open your browser and navigate to the load balancer’s DNS name (e.g., http://my-load-balancer.amazonaws.com). You should see the content from your EC2 instances being served alternately as you refresh the page.
+
+======================================================================================================================================================
+Step 3: Setting Up Auto Scaling
+Why?
+Auto Scaling automatically adjusts the number of EC2 instances in your application based on demand. It adds instances when demand increases and removes them when it decreases, ensuring your application is cost-efficient and scalable.
+
+Two types autoscaling
+1-Horizontal Autoscaling----increases number of servers
+2-Vertical autoscaling=----increases the configuration of existing server
+
+
+
+How?
+Go to EC2 Dashboard > Auto Scaling Groups > Create Auto Scaling Group.
+
+Create a Launch Template:
+Launch Configuration: Use the same instance configuration as your EC2 instances.
+Configure Auto Scaling Group:
+Attach it to the Load Balancer created earlier.
+Set minimum and maximum number of instances (e.g., min = 2, max = 4).
+Configure Auto Scaling Policies:
+Use scaling policies based on CPU Utilization (more instances when CPU > 70%, fewer when CPU < 30%).
+============================================================================================================================================
+Step 4: stress servers CPU
+
+sudo yum install stress -y
+
+stress --cpu 80 --timeout 1000
+
+=============================================================
+
+✅ Scenario 1: CPU spikes to 80% with 2 instances
+Current average CPU = 80%
+
+Target = 40%
+
+Current capacity = 2
+
+Estimated:
+
+New Desired Capacity = 2 × (80 / 40) = 4
+So AWS would scale out to 4 instances.
+
+✅ Scenario 2: CPU is low at 20% with 6 instances
+New Desired Capacity = 6 × (20 / 40) = 3
+====================================================================================
