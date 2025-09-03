@@ -1,0 +1,401 @@
+What is AWS Lambda?
+===================
+
+AWS Lambda is a serverless computing service. It lets you run code without worrying about managing servers. AWS automatically takes care of the servers for you.
+
+Imagine you have a piece of code that you want to run, but you don’t want to set up a computer or server to run it. Lambda lets you upload your code, and AWS will handle everything: from making sure it runs when needed to scaling it for more users.
+
+Lambda functions are triggered to run based on events. An event could be:
+
+##Uploading a file to S3 (like a user uploading a picture).
+##API call (such as a request made through an API Gateway).
+##Scheduled event (like a function running every hour).
+
+When an event happens, AWS Lambda automatically runs the function you have defined.
+=======================================================================================
+Key Components of AWS Lambda
+
+Function: The code you write that Lambda will execute.
+Event source: What triggers the function, such as an API Gateway request, file upload, or a change in a database.
+Execution environment: The runtime (such as Python, Node.js, etc.) in which your function runs.
+Logs: AWS Lambda automatically logs the output of your function using Amazon CloudWatch.
+============================================================================================
+How to Create an AWS Lambda Function
+
+Create a Function:
+
+Go to the AWS Lambda console.
+Click Create Function.
+Choose "Author from scratch," and select a runtime (like Python).
+Write or Upload Code:
+
+In the code editor, write a simple "Hello World" function.
+python
+Copy code
+
+def lambda_handler(event, context):
+    return 'Hello, World!'
+
+
+Set the Trigger:
+
+Attach a trigger, such as an API Gateway or S3 event(adding file to bucket triggers lambda).
+
+
+Test the Function:
+
+Create a test event or upload a file (if you set S3 as the trigger) to see how the function runs.
+
+Monitor Logs:
+
+Check the function's logs in CloudWatch to see what happened when it ran.
+also in monitor tab of lambda function.
+==============================================================
+
+ Benefits of AWS Lambda
+To sum up the explanation, highlight the benefits:
+
+No server management: You don't need to manage, update, or scale servers.
+Pay only for what you use: You only pay when your function runs (i.e., you're billed for the compute time).
+Scalability: Lambda automatically scales to handle more requests.
+=================================================================
+Example Use Case
+Give them an example they can relate to, such as:
+
+Image Processing: When a user uploads an image to an S3 bucket, a Lambda function could automatically resize it or convert it to a different format.
+=======================================================================================================================================================
+Lambda that Capitalizes Text from S3
+This Lambda function is triggered when a .txt file is uploaded to S3, capitalizes the text, and uploads the modified file back to the bucket.
+
+Code Example:
+python
+
+Copy below  code
+
+====================================================================
+import boto3
+import os
+import logging
+
+s3_client = boto3.client('s3')
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+def lambda_handler(event, context):
+    try:
+        # Get the bucket and file details from the event
+        bucket_name = event['Records'][0]['s3']['bucket']['name']
+        key = event['Records'][0]['s3']['object']['key']
+        logger.info(f"Triggered by file: {key} in bucket: {bucket_name}")
+
+        # Only process .txt files
+        if not key.endswith('.txt'):
+            logger.warning("File is not a .txt file; skipping.")
+            return {
+                'statusCode': 400,
+                'body': "Only .txt files are processed."
+            }
+
+        # Download the file from S3
+        download_path = f'/tmp/{os.path.basename(key)}'
+        s3_client.download_file(bucket_name, key, download_path)
+        logger.info("File downloaded successfully.")
+
+        # Read the contents, modify it, and save it back
+        with open(download_path, 'r') as file:
+            content = file.read()
+        logger.info("File read successfully.")
+
+        # Append text to the file content
+        new_content = content + "\nThis is an appended line."
+
+        # Save the modified content to a new file in /tmp
+        modified_key = key.replace('.txt', '_appended.txt')
+        upload_path = f'/tmp/{modified_key}'
+        with open(upload_path, 'w') as file:
+            file.write(new_content)
+        logger.info("New file created with appended content.")
+
+        # Upload the modified file back to the same bucket
+        s3_client.upload_file(upload_path, bucket_name, modified_key)
+        logger.info(f"File '{modified_key}' uploaded successfully to bucket '{bucket_name}'.")
+
+        return {
+            'statusCode': 200,
+            'body': f"File '{modified_key}' uploaded successfully to bucket '{bucket_name}'."
+        }
+
+    except Exception as e:
+        logger.error(f"Error processing file: {e}", exc_info=True)
+        return {
+            'statusCode': 500,
+            'body': f"Error processing file: {str(e)}"
+        }
+============================================
+python code to trigger when .txt is uploaded and uploadback to same bucket with timestamp added to filename  hello.txt hello_201251428.txt
+====================================================================
+import boto3
+import os
+import logging
+from datetime import datetime
+from botocore.exceptions import ClientError
+
+s3_client = boto3.client('s3')
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+def lambda_handler(event, context):
+    try:
+        # Validate the event structure
+        if 'Records' not in event or not event['Records']:
+            raise ValueError("Event structure is invalid or missing 'Records' key.")
+
+        # Get the bucket and file details from the event
+        record = event['Records'][0]
+        bucket_name = record['s3']['bucket']['name']
+        key = record['s3']['object']['key']
+        logger.info(f"Triggered by file: {key} in bucket: {bucket_name}")
+
+        # Only process .txt files
+        if not key.endswith('.txt'):
+            logger.warning("File is not a .txt file; skipping.")
+            return {
+                'statusCode': 400,
+                'body': "Only .txt files are processed."
+            }
+
+        # Download the file from S3
+        download_path = f'/tmp/{os.path.basename(key)}'
+        s3_client.download_file(bucket_name, key, download_path)
+        logger.info(f"File '{key}' downloaded successfully to {download_path}.")
+
+        # Read the file content
+        with open(download_path, 'r') as file:
+            content = file.read()
+        logger.info(f"File '{key}' read successfully.")
+
+        # Append text to the file content
+        new_content = content + "\nThis is an appended line."
+
+        # Save the modified content to a new file in /tmp
+        with open(download_path, 'w') as file:
+            file.write(new_content)
+        logger.info(f"File '{key}' updated with appended content.")
+
+        # Generate a new key with the current timestamp
+        timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+        new_key = key.replace('.txt', f'_{timestamp}.txt')
+
+        # Upload the modified file back to the same bucket
+        s3_client.upload_file(download_path, bucket_name, new_key)
+        logger.info(f"File '{new_key}' uploaded successfully to bucket '{bucket_name}'.")
+
+        return {
+            'statusCode': 200,
+            'body': f"File '{new_key}' uploaded successfully to bucket '{bucket_name}'."
+        }
+
+    except ClientError as e:
+        logger.error(f"ClientError while processing file: {e}", exc_info=True)
+        return {
+            'statusCode': 500,
+            'body': f"ClientError while processing file: {str(e)}"
+        }
+    except Exception as e:
+        logger.error(f"Error processing file: {e}", exc_info=True)
+        return {
+            'statusCode': 500,
+            'body': f"Error processing file: {str(e)}"
+        }
+
+===============================================================
+
+How It Works:
+Trigger: When a text file is uploaded to an S3 bucket.
+Function: The Lambda reads the file, capitalizes all text, and uploads it back to the bucket with a new name with date.
+Useful to demonstrate file manipulation and the basics of working with S3.
+=======================================================================================================================================================
+===================================================================================================================================================
+API gateway
+=================
+What is API--->
+===============
+Introduction to API Gateway
+
+API Gateway is a fully managed service that makes it easy to create, publish, maintain, monitor, and secure APIs (Application Programming Interfaces) at any scale.
+
+It acts as a “front door” for applications to access data, business logic, or functionality from backend services such as Lambda functions, EC2, or any other web service.
+
+Use cases: It’s used to expose services to external clients (e.g., mobile apps, web apps) or internal microservices in a secure and scalable manner.
+
+GET: Retrieves data from the server (e.g., get a list of users).
+POST: Sends data to the server to create a new resource (e.g., create a new user).
+PUT: Updates an existing resource on the server (e.g., update user information).
+DELETE: Removes a resource from the server (e.g., delete a user).
+
+Types of API that can be created 
+
+1. REST API
+REST API (Representational State Transfer) is the most commonly used type of API in API Gateway.
+It's HTTP-based and is often used to build web services that allow different applications (like mobile apps or web apps) to communicate with your backend services.
+Example:
+
+A mobile app that retrieves a list of users from a database by making a GET request to /users.
+A web app that sends a POST request to /orders to place an order.
+Use Case: When you want to create a full-featured API that can handle things like authentication, request/response validation, rate limiting, caching, and more.
+
+2. HTTP API
+HTTP API is a simpler, lighter version of REST API. It’s used when you don’t need all the advanced features that REST APIs offer.
+It’s faster and cheaper than REST API because it is designed for basic use cases, such as when you want to create simple APIs to connect to services like AWS Lambda or other HTTP endpoints.
+Example:
+
+A serverless web app that sends a request to an HTTP API to process data and get a response from a Lambda function.
+Use Case: When you need to build an API quickly and don’t require advanced features like request validation or detailed logging.
+
+3. WebSocket API
+WebSocket API is used for real-time, two-way communication between the client (such as a browser or mobile app) and the server.
+Unlike REST and HTTP APIs, where the client sends a request and the server responds, WebSocket APIs allow the client and server to send messages to each other continuously after the connection is established.
+Example:
+
+A real-time chat app where users can send and receive messages instantly.
+A live stock trading app where the server pushes price updates to the client in real-time.
+Use Case: When you need real-time communication, like in messaging apps, live gaming, or stock price updates, where the server needs to constantly push updates to the client.
+
+=====================================================================================================================================================
+
+integrating lambda and API gateway
+===================================
+Step 1: Create a Lambda Function
+Why?
+Lambda will hold the code that performs the action (in this case, sending a message). When API Gateway receives a request, it will trigger this Lambda function.
+
+Steps:
+Go to AWS Lambda Console:
+
+Log in to your AWS account and navigate to the Lambda service.
+Create a Function:
+
+Click Create Function.
+Choose Author from scratch.
+Name the function something like HelloLambdaFunction.
+Set the Runtime to Python 3.x (or any other language you're comfortable with).
+Leave everything else as default and click Create function.
+Write the Lambda Code:
+
+In the code editor, replace the default code with this simple "Hello from Lambda" function:
+python
+
+def lambda_handler(event, context):
+    return {
+        'statusCode': 200,
+        'body': 'Hello from Lambda!'
+    }
+
+Save the Lambda Function:
+
+Click Deploy to save the changes.
+
+What Happens Here:
+The Lambda function is now created. When it gets triggered, it will return a status code 200 (which means success) and the message "Hello from Lambda!".
+===========================================================================================================================================================
+Step 2: Create an API in API Gateway
+Why?
+API Gateway will act as the interface between the user and your Lambda function. It will receive the request (e.g., from a browser) and forward it to the Lambda function for processing.
+
+Steps:
+Go to API Gateway Console:
+
+From the AWS Management Console, go to API Gateway.
+Create a New API:
+
+Click Create API.
+Choose REST API.
+Select New API.
+Name your API something like HelloLambdaAPI.
+Keep the Endpoint Type as Regional.
+click API
+
+Create a Resource:
+
+In the left-hand panel, click Actions and choose Create Resource.
+
+Name the resource /hello.
+Check the box that says Enable API Gateway CORS (this enables cross-origin resource sharing, which helps when calling the API from browsers).
+
+
+Create a Method:
+
+Under the new /hello resource, click Actions and select Create Method.
+Choose GET (this means users will get data from this endpoint).
+
+For Integration Type, select Lambda Function.
+In the Lambda Region, choose the region where you created the Lambda function.
+In Lambda Function, type the name of the function (HelloLambdaFunction), and click create Method.
+
+What Happens Here:
+You’ve just created an API with a resource /hello, which triggers a GET request to the Lambda function. API Gateway will handle incoming requests and send them to the Lambda function.
+
+Step 3: Deploy the API
+Why?
+After setting up your API, you need to deploy it to make it accessible via a URL. Deploying also allows you to create different versions or environments (like dev, test, or prod).
+
+Steps:
+Go to the Actions Menu:
+
+In API Gateway, click Actions and choose Deploy API.
+
+Create a New Stage:
+
+Choose New Stage.
+Name the stage something like dev (for development).
+Click Deploy.
+Get the API URL:
+
+Once deployed, you’ll be provided with a URL to access the API.
+It will look something like this: https://abc123.execute-api.us-east-1.amazonaws.com/dev/hello.
+
+find  URL from stage 
+
+
+What Happens Here:
+The API is now live. The URL allows anyone to trigger the Lambda function by making a request to the /hello endpoint.
+Step 4: Test the API
+Why?
+This step verifies that everything is working. By accessing the API URL in a browser or using a tool like Postman, we can confirm the integration is successful.
+Steps:
+Open a Browser or Postman:
+
+In the browser, enter the API URL from the previous step: https://abc123.execute-api.us-east-1.amazonaws.com/dev/hello.
+Alternatively, in Postman, create a GET request with the same URL and click Send.
+See the Response:
+
+If everything is set up correctly, you should see the response: Hello from Lambda!.
+What Happens Here:
+You’re making a request to API Gateway, which forwards it to the Lambda function. The Lambda function processes the request and sends back the message “Hello from Lambda!”.
+Step 5: Enable CORS (Optional)
+Why?
+If you plan to access this API from a web browser, you may need to enable CORS (Cross-Origin Resource Sharing) to allow your API to be called from web pages hosted on different domains.
+Steps:
+In the API Gateway console, click on the /hello resource.
+Under the Actions menu, select Enable CORS.
+Confirm the settings and click Enable CORS and replace existing CORS headers.
+What Happens Here:
+CORS is enabled, which allows your API to be called from different web domains (e.g., if your API is called from a JavaScript app hosted on a different domain).
+
+
+
+
+Summary of the Steps:
+Create a Lambda function: This is the core logic that will be executed when someone calls your API.
+Create an API in API Gateway: This sets up a REST API that can accept requests and pass them to the Lambda function.
+Deploy the API: This makes your API publicly accessible via a URL.
+Test the API: Confirm that everything works by making a request to your API.
+Enable CORS (optional): If you're calling the API from a browser, enable CORS for cross-domain requests.
+
+
+Why This Project is Useful:
+Hands-on Experience: It demonstrates how to integrate Lambda with API Gateway to create serverless applications.
+Practical Use Case: This is the foundation of many real-world use cases like building backend services, creating APIs for mobile apps, and more.
+Scalability: Both Lambda and API Gateway scale automatically, making this a powerful and flexible solution for handling traffic.
+=========================================
+curl -X POST https://abc123.execute-api.us-east-1.amazonaws.com/hello -H "Content-Type: application/json" -d '{"name": "Alice"}'

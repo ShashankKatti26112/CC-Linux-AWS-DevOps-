@@ -1,0 +1,61 @@
+AWS DynamoDB is a fully managed NoSQL database service provided by AWS. It allows you to store and retrieve large amounts of data with high performance and scalability. Unlike traditional relational databases, DynamoDB uses a key-value and document-oriented model, meaning it doesn't rely on a fixed schema like tables in relational databases. Instead, you work with items and attributes.
+
+How to Use DynamoDB
+Creating a Table: The basic unit of data in DynamoDB is a table. When you create a table, you specify:
+
+Primary Key: This is how DynamoDB uniquely identifies each item in the table. It can be a simple key (partition key) or a composite key (partition key + sort key).
+Throughput: You can set how much data can be read or written (capacity units), or you can use "on-demand" mode to scale as needed.
+Adding Data (Items): Each row of data is called an item, and it is a collection of attributes. Attributes are key-value pairs that can be text, numbers, or binary data.
+
+Reading and Writing Data:
+
+PutItem: Used to add or update an item in the table.
+GetItem: Retrieves a single item based on the primary key.
+Query: Retrieves multiple items using a partition key and optional sort key.
+Scan: Retrieves all items in the table but can be less efficient than Query.
+Indexes: You can create secondary indexes (Global Secondary Indexes or Local Secondary Indexes) to improve querying on attributes other than the primary key.
+
+Monitoring and Scaling: You can monitor performance using CloudWatch and adjust the table’s throughput or use auto-scaling for automatic adjustments.
+
+
+
+Create a New DynamoDB Table
+============================
+On the DynamoDB dashboard, click Create table.
+Table Name: Enter a name for your table (e.g., UsersTable).
+Partition Key: Enter a key (e.g., UserID of type String). This is the primary key DynamoDB will use to find items.
+Sort Key (Optional): If you want to uniquely identify an item with two attributes (e.g., UserID and Email), you can add a sort key. For simplicity, skip this for now.
+Table Settings: Choose default settings for now to keep it simple.
+Read/Write Capacity Mode: Select On-demand to automatically scale.
+Click Create Table.
+
+
+
+ Add Items (Data) to the Table
+=================================
+Once your table is created, you’ll be taken to a page that shows your table details.
+
+Click on the Items tab.
+Click Create item.
+You’ll see a form to add data:
+Under UserID (or whatever you named your partition key), enter a unique value (e.g., User123).
+Add additional attributes by clicking Add new attribute. For example, you can add attributes like Name (String), Email (String), Age (Number).
+After adding the desired attributes, click Create Item.
+Repeat this process to add more items to your table.
+
+
+ Querying Data from the Table
+==============================
+Go to the Items tab in your table.
+Click Actions and select Query.
+In the query form, specify the Partition Key (e.g., UserID) and provide a value (e.g., User123).
+Click Run to fetch the item.
+
+Scanning the Entire Tabl
+========================
+Go to the Items tab.
+Click Scan.
+This will return all items in the table. You can also add conditions to narrow down the results if you have more items.
+
+===============================
+In DynamoDB, Capacity Units are a measure of the read and write throughput for your table. They represent how much data can be read from or written to your table per second.

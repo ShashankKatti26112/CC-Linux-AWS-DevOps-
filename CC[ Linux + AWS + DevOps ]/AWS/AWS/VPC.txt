@@ -1,0 +1,207 @@
+Introduction to VPC
+===================== 
+Virtual Private Cloud (VPC)
+
+VPC: A VPC allows you to create a private, isolated section of the AWS cloud where you can launch AWS resources, such as EC2 instances.
+
+Think of it as your own private network within AWS.
+---------------------------------------------------------
+Create a VPC (VPC with a Single Public Subnet)
+
+
+A subnet is a range of IP addresses in your VPC.
+A public subnet allows resources within it to be accessible from the internet.
+Steps to Create a VPC:
+
+Login to AWS Management Console and navigate to VPC from the Services menu.
+In the VPC Dashboard, click Create VPC.
+For Name tag, provide a name (e.g., MyVPC).
+For IPv4 CIDR((Classless Inter-Domain Routing)) block, enter a block of IP addresses (e.g., 10.0.0.0/16).
+CIDR is a way of allocating IP addresses. 10.0.0.0/16 allows 65,536 IP addresses.
+Leave the other settings as default and click Create VPC.
+
+We will create a private cloud and assign ip range  10.0.0.0/16
+
+  32
+- 16
+---------
+   16
+
+  2 power 16  = 65536 ( ip address )
+
+So, in our private cloud we can have only 65536 machines only.
+
+Stick to the reserved private IP ranges:(other ranges may conflict with public IPs as per defined in RFC 1918)
+
+10.0.0.0/8
+172.16.0.0/12
+192.168.0.0/16
+
+=============================================================================================
+Create and Attach an Internet Gateway
+An Internet Gateway allows instances in your VPC to access the internet.
+
+Steps to Create and Attach an Internet Gateway:
+
+On the VPC dashboard, go to Internet Gateways.
+Click Create internet gateway, give it a name (e.g., MyInternetGateway), and click Create.
+Now, select the newly created internet gateway, click Actions, and choose Attach to VPC.
+Select the VPC you created (MyVPC), and click Attach internet gateway.
+================================================================
+4. Create an Amazon VPC Subnet
+A subnet allows you to segment your VPC.
+==================================================================
+
+Steps to Create a Public Subnet:
+
+In the VPC dashboard, go to Subnets and click Create Subnet.
+Select your VPC from the dropdown (MyVPC).
+For Subnet name, type PublicSubnet.
+For Availability Zone, select one (e.g., us-east-1a).
+For IPv4 CIDR block, enter a range of IPs (e.g., 10.0.1.0/24).
+This gives you 256 IP addresses.
+Click Create subnet.
+
+5. Set Up Routing in the VPC
+Routing allows traffic to flow between your VPC and the internet.
+
+The key difference between a private subnet and a public subnet is that the private subnet does not have a route to an Internet Gateway, meaning instances within it can’t be accessed from the internet.
+===========================================================================
+
+Steps to Set Up a Route Table:
+
+Go to Route Tables in the VPC dashboard.
+Select the route table for your VPC (it’s usually created automatically with the VPC).
+Under Routes, click Edit routes.
+Click Add route and add:
+Destination: 0.0.0.0/0 (which means all traffic)
+Target: Select your Internet Gateway (e.g., MyInternetGateway).
+Click Save changes.
+Now, traffic can flow from your subnet to the internet.
+=================================================================================
+
+otherwise select VPC and more to create everything in one click
+===================================================================================
+Complete manual project for 3 tier web application
+====================================================
+
+Step 1: Create a VPC
+Why?
+A Virtual Private Cloud (VPC) allows you to define a logically isolated network within AWS where you can launch and manage your resources securely.
+
+How?
+Go to the AWS Management Console.
+Navigate to the VPC Dashboard.
+Click on Create VPC.
+Name: 3-Tier-VPC
+IPv4 CIDR Block: 10.0.0.0/16 (adjust as per your requirement)
+Tenancy: Default.
+Click Create VPC.
+
+
+Step 2: Create Subnets
+Why?
+Subnets divide the VPC into smaller network segments.
+
+The public subnet hosts resources (like a web server) that need internet access.
+The private subnet hosts backend resources (like application and database servers) that must remain isolated for security.
+How?
+Go to the VPC Dashboard → Subnets → Create Subnet.
+Create the Public Subnet:
+Name: Public-Subnet
+VPC: Select 3-Tier-VPC.
+Availability Zone: Select one (e.g., us-east-1a).
+IPv4 CIDR Block: 10.0.1.0/24.
+Click Create.
+Create the Private Subnet:
+Name: Private-Subnet
+VPC: Select 3-Tier-VPC.
+Availability Zone: Use the same or another one (e.g., us-east-1b).
+IPv4 CIDR Block: 10.0.2.0/24.
+Click Create.
+
+
+Step 3: Attach an Internet Gateway
+Why?
+The Internet Gateway allows resources in the public subnet to connect to the internet.
+
+How?
+Go to the VPC Dashboard → Internet Gateways → Create Internet Gateway.
+Name: 3-Tier-IGW.
+Click Create.
+Attach the Internet Gateway to your VPC:
+Select the newly created 3-Tier-IGW.
+Click Actions → Attach to VPC.
+Choose 3-Tier-VPC and click Attach.
+
+
+Step 4: Configure Route Tables
+Why?
+Route tables define how traffic is directed within the VPC. The public subnet needs internet access, while the private subnet routes traffic internally.
+
+How?
+Go to Route Tables → Create Route Table.
+Name: Public-RT
+VPC: Select 3-Tier-VPC.
+Click Create.
+Associate the Public-RT with the public subnet:
+Select the Public-RT.
+Click Subnet Associations → Edit Subnet Associations.
+Select Public-Subnet and save.
+Add a route for internet access:
+Select Public-RT.
+Go to Routes → Edit Routes → Add Route.
+Destination: 0.0.0.0/0.
+Target: Select the Internet Gateway (3-Tier-IGW).
+Save changes.
+The private subnet will use the Main Route Table by default (no need to modify it initially).
+
+
+
+Step 5: Configure a NAT Gateway for the Private Subnet
+Why?
+The NAT Gateway allows instances in the private subnet to access the internet for updates or outbound traffic, without exposing them to inbound internet access.
+
+How?
+Go to VPC Dashboard → NAT Gateways → Create NAT Gateway.
+Name: 3-Tier-NAT.
+Subnet: Select Public-Subnet.
+Elastic IP: Allocate or select an existing one.
+Click Create NAT Gateway.
+Update the private subnet route table:
+Go to Route Tables.
+Select the main route table associated with the private subnet.
+Add a route:
+Destination: 0.0.0.0/0.
+Target: Select the NAT Gateway (3-Tier-NAT).
+Save changes.
+
+Step 6: Deploy Resources in Subnets
+Web Tier: Deploy the web server (e.g., EC2 instance) in the public subnet.
+Application Tier: Deploy the application server in the private subnet.
+Database Tier: Deploy the database (e.g., RDS) in the private subnet.
+Step 7: Security Groups and Access
+Web Tier Security Group:
+Allow inbound HTTP/HTTPS traffic (ports 80, 443) from 0.0.0.0/0.
+Allow SSH (port 22) only from your IP.
+Application Tier Security Group:
+Allow traffic from the web tier security group (e.g., port 8080 or custom).
+Database Tier Security Group:
+Allow traffic from the application tier security group (e.g., port 3306 for MySQL).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

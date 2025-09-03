@@ -1,0 +1,111 @@
+Introduction to Boto3
+=====================
+What is Boto3? Boto3 is the AWS SDK for Python, allowing Python developers to interact with AWS services programmatically.
+
+Why Use Boto3? It enables automation and scripting for AWS services without needing to rely on the AWS Console or CLI.
+
+Prerequisites
+=============
+Python Installation: python --version or python3 --version
+Boto3 Installation: Install Boto3 using pip:sudo apt update && 
+
+in amazon linux-->sudo yum install python3-pip && pip install boto3 or 
+
+on ubuntu-->sudo apt install python3-boto3
+
+AWS Credentials: The same credentials used for AWS CLI are also used by Boto3. should configure their AWS credentials:
+aws configure
+This stores their credentials in ~/.aws/credentials.
+
+Basic Structure of Boto3 Scripts
+================================
+Every Boto3 script follows a similar pattern:
+
+Import the required libraries.
+Create a session or directly access resources or clients.
+Call AWS services using Boto3 methods.
+Handle the responses or errors.
+===================================
+https://docs.aws.amazon.com/code-library/latest/ug/cloudwatch_example_cloudwatch_Hello_section.html
+======================================
+Connect to AWS and List S3 Buckets
+
+create a file file.py 
+===================
+import boto3
+
+# Create a session using default credentials
+s3 = boto3.client('s3')
+
+# List all S3 buckets
+response = s3.list_buckets()
+
+print("S3 Buckets:")
+for bucket in response['Buckets']:
+    print(f'  {bucket["Name"]}')
+====================================
+run python3 file.py
+====================================
+
+Upload a File to S3
+============================================================
+import boto3
+
+s3 = boto3.client('s3')
+
+# Upload a file to the specified bucket
+s3.upload_file('localfile.txt', 'your-unique-bucket-name-apponix', 'uploadedfile.txt')
+
+print("File uploaded successfully!")
+===============================================================
+
+Launch an EC2 Instance
+==================================
+import boto3
+
+ec2 = boto3.resource('ec2')
+
+# Launch an EC2 instance
+instance = ec2.create_instances(
+    ImageId='ami-02972a2a0ac299bb7',
+    InstanceType='t2.micro',
+    MinCount=1,
+    MaxCount=1,
+    KeyName='docker'
+)
+
+print(f'EC2 instance {instance[0].id} created successfully!')
+==============================================================
+Script to Stop EC2:
+
+import boto3
+
+ec2 = boto3.client('ec2')
+
+# Stop the EC2 instance
+ec2.stop_instances(InstanceIds=['i-xxxxxxxxxxxxxxxxx'])
+print("EC2 instance stopped successfully!")
+===================================================================
+Script to Create IAM User:
+
+import boto3
+
+iam = boto3.client('iam')
+
+# Create a new IAM user
+response = iam.create_user(UserName='new-user')
+print(f'User {response["User"]["UserName"]} created successfully!')
+==========================================================================
+
+for the script i will pass arguments 
+
+python3 script.py aws devops Linux 
+
+3 instance should get created 
+
+also another script 
+ python3 script1.py aws devops Linux 
+
+it should delete the ec2 s created 
+
+

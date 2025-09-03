@@ -1,0 +1,156 @@
+Amazon SQS 
+===========
+(Simple Queue Service) is a fully managed message queuing service by AWS that allows different parts of a system to communicate asynchronously using messages.
+
+In Simple Words:
+"SQS is like a waiting line (queue) where one service drops a message, and another service picks it up when ready."
+
+| Purpose                   | Benefit                                                                    |
+| ------------------------- | -------------------------------------------------------------------------- |
+| **Decouples components**  | Your app doesn’t need to wait for other parts to finish.                   |
+| **Improves scalability**  | Helps handle high traffic by processing messages one by one or in batches. |
+| **Increases reliability** | Messages are not lost even if the system crashes.                          |
+| **Supports retries**      | Failed messages can be reprocessed automatically.                          |
+| **Built-in durability**   | Messages are stored redundantly across multiple AWS servers.               |
+
+Analogy: Pizza Order System
+
+| Component             | Role                                              |
+| --------------------- | ------------------------------------------------- |
+| Customer              | Puts order in the queue (Producer)                |
+| Order Counter (Queue) | Holds the orders (SQS)                            |
+| Kitchen               | Takes orders from the counter (Consumer)          |
+| Done                  | Pizza is ready when kitchen processes the message |
+
+
+Core Concepts
+==============
+Queue – Temporary storage for messages.
+
+Producer – App/service that sends the message.
+
+Consumer – App/service that receives and processes it.
+
+Message – The actual data (e.g., order details, logs, tasks).
+
+
+Real-World Use Cases
+======================
+E-commerce: Order placed → pushed to SQS → processed by backend
+
+Video Processing: Upload video → queue task → background worker encodes it
+
+Logging: Microservices send logs to SQS → central processor stores in database
+
+
+
+     [Producer App]
+          │
+          ▼
+  ┌────────────────────┐
+  │     SQS Queue      │
+  │ (holds messages)   │
+  └────────────────────┘
+          │
+          ▼
+    [Consumer App]
+ (e.g., AWS Lambda, EC2)
+
+
+Key Features of SQS
+======================
+Fully managed (no server setup)
+
+Scales automatically
+
+Retains messages up to 14 days
+
+Supports Dead Letter Queues (for failed messages)
+
+Easy integration with Lambda, EC2, ECS, etc.
+===================================================================================
+====================================================================================
+✅ Step 1: Create an SQS Queue
+Go to AWS Console → SQS
+
+Click Create queue
+
+Choose Standard Queue
+
+Queue name: DemoQueueLambda
+
+Click Create
+
+✅ Step 2: Create IAM Role for Lambda (if not exists)
+This role should have permissions to:
+
+Read from SQS
+
+Write to CloudWatch Logs
+
+
+✅ Step 3: Create Lambda Function
+Go to AWS Lambda Console
+
+Click Create function
+
+Name: ProcessSQSMessage
+
+Runtime: Python 3.9
+
+Permissions:
+
+Choose existing role (the one created above)
+
+Click Create function
+
+
+✅ Step 4: Add SQS as a Trigger
+In the Lambda function page, click “Add trigger”
+
+Select SQS
+
+Choose your queue: DemoQueueLambda
+
+Batch size: 1 (for simplicity)
+
+Click Add
+
+
+✅ Step 5: Lambda Code Example
+
+import json
+
+def lambda_handler(event, context):
+    for record in event['Records']:
+        message = record['body']
+        print(f"Received message: {message}")
+        
+    return {
+        'statusCode': 200,
+        'body': json.dumps('Message processed successfully!')
+    }
+
+
+✅ Step 6: Send a Test Message to SQS
+You can do this via:
+
+Console:
+
+Go to SQS
+
+Select DemoQueueLambda
+
+Click Send and receive messages
+
+Message body: {"task": "process_order", "order_id": "12345"} → Click Send
+
+
+✅ Step 7: Check Lambda Logs
+Go to CloudWatch → Logs
+
+Open the log group /aws/lambda/ProcessSQSMessage
+
+See the output like:Received message: {"task": "process_order", "order_id": "12345"}
+======================================================================================
+==================================================

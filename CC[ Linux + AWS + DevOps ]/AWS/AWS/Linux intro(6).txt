@@ -1,0 +1,92 @@
+AWS Elastic Beanstalk
+=====================
+
+Introduction to AWS Elastic Beanstalk
+AWS Elastic Beanstalk is a Platform as a Service (PaaS) that helps you deploy and manage applications in the AWS Cloud without worrying about the infrastructure. Elastic Beanstalk automatically handles deployment, from capacity provisioning, load balancing, and scaling to application health monitoring.
+
+Why Use Elastic Beanstalk?
+
+Simplified Management: Elastic Beanstalk takes care of server management, letting developers focus on writing code.
+Scalability: Elastic Beanstalk can scale applications up or down automatically.
+Multi-Platform Support: It supports various platforms like Java, .NET, Node.js, Python, Ruby, Go, and Docker.
+Getting Started with AWS Elastic Beanstalk
+Before starting, make sure you:
+
+Have an AWS account.
+Install the AWS CLI on your system (optional for this demo but useful for advanced users).
+Set up an IAM user with permissions to access and manage Elastic Beanstalk.
+Step-by-Step Guide to Deploying an Application with Elastic Beanstalk
+Step 1: Setting Up Your Environment
+
+Login to AWS Management Console:
+
+Go to the AWS Console and sign in with your credentials.
+Navigate to Elastic Beanstalk:
+
+Search for "Elastic Beanstalk" in the AWS console and open it.
+Create a New Application:
+
+Click Create Application.
+Give your application a name (e.g., "MyDemoApp").
+Add a description if needed.
+Step 2: Configure Your Environment
+
+Choose a Platform:
+
+Select the platform your application uses (e.g., Node.js, Java, Python).
+Select the platform version (leave as the default if you’re unsure).
+Upload Your Application Code:
+
+If you have a code package (.zip or .war file), upload it here.
+If you don’t have code, you can still proceed to launch a sample application provided by Elastic Beanstalk.
+Click Sample application to deploy AWS’s sample application.
+Configure Additional Settings (optional):
+
+If you want to customize environment configurations, such as instance type or network settings, expand the Configure more options section.
+For this guide, choose the default settings to keep it simple.
+Step 3: Launch the Environment
+
+Create Environment:
+
+Click Create environment to start the deployment.
+Elastic Beanstalk will automatically create an environment and start deploying your application.
+Wait for Deployment:
+
+Elastic Beanstalk takes a few minutes to set up your environment, including creating an EC2 instance, a load balancer, and setting up auto-scaling.
+View Your Application:
+
+Once the deployment is complete, Elastic Beanstalk will provide you with a URL to access your application.
+Click on the provided link to view the application in your browser.
+Step 4: Monitor and Manage Your Application
+
+Application Health:
+
+In the Elastic Beanstalk dashboard, you can view the health status of your application (e.g., Green = Healthy).
+This gives insight into how well your application performs and if there are any issues.
+Environment Dashboard:
+
+The dashboard also provides tools to view logs, monitor performance, and scale your application.
+To access logs, click Logs > Request Logs to download and view your application logs.
+Scaling and Load Balancing:
+
+Elastic Beanstalk automatically configures auto-scaling based on demand.
+You can adjust these settings if needed under Configuration > Capacity.
+Step 5: Update Your Application
+
+Prepare a New Version:
+
+Make any necessary changes to your application code locally.
+Package the updated code into a new file (e.g., MyDemoApp_v2.zip).
+Upload the New Version:
+
+In the Elastic Beanstalk dashboard, go to Actions > Upload and deploy.
+Upload your new application version and deploy it.
+Verify the Update:
+
+Once deployed, refresh your application URL to see the updated version live.
+Cleaning Up
+To avoid unexpected charges, make sure to terminate your Elastic Beanstalk environment if you’re done testing:
+
+In the Elastic Beanstalk console, select your environment.
+Click Actions > Terminate Environment.
+Confirm termination, and AWS will delete the associated resources.

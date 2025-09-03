@@ -1,0 +1,106 @@
+AWS Route53:-
+===================
+AWS Route 53 is a scalable and highly available Domain Name System (DNS) web service. It performs three main functions:
+
+Domain Registration – You can purchase and manage domain names directly from AWS.
+DNS Routing – Route 53 translates human-readable domain names (e.g., example.com) into IP addresses that computers use to connect to each other.
+
+Health Checking – Monitors the health of endpoints and automatically routes traffic to healthy instances or services.
+
+
+Hosted Zone:-
+===========
+:-A Hosted Zone is a container within Route 53 that holds DNS records for a specific domain. It’s where you define how traffic is routed for that domain.
+
+Key Concept:
+Think of a hosted zone as a settings page for your domain. It contains records that tell the internet where to find resources (like EC2 instances, S3 buckets, or Load Balancers).
+
+====Overview of How It Works=========
+=================================
+AWS Load Balancer (ALB/NLB) distributes traffic across EC2 instances.
+SSL Certificate is attached to the Load Balancer to encrypt data in transit.
+Route 53 (DNS) is used to route domain traffic to the Load Balancer.
+ACM (AWS Certificate Manager) provides free SSL certificates.
+
+================================================================
+What are Name Servers (NS Records)?
+=================================
+Name servers (NS records) tell the internet which DNS service is authoritative for a domain. They manage and respond to DNS queries, mapping domain names to IP addresses.
+
+When a user types example.com into their browser:
+
+The query is directed to the name servers for example.com.
+The name servers provide the correct IP address or resource.
+In Route 53:
+
+When you create a hosted zone for example.com, AWS assigns four name servers.
+These NS records must be registered at your domain registrar to route traffic properly.
+===========================================================
+What is an SOA (Start of Authority) Record?
+The Start of Authority (SOA) record is the first record in any DNS zone file. It provides administrative details about the domain and specifies the primary name server for the zone.
+
+===============================================================================================
+Step-by-Step Process
+=============================================================================
+1. Set Up Route 53 for Domain Name
+Register a Domain (Optional):
+If you don’t have a domain, register one in Route 53 or from a third-party registrar (e.g., GoDaddy).
+
+Create a Hosted Zone (if not already created):
+
+Go to Route 53 > Hosted Zones.
+Click Create Hosted Zone.
+Enter your domain name (e.g., example.com).
+Note the NS (Name Servers) values. If your domain is from another registrar, update these in the registrar's DNS settings.
+Create an A Record for the Load Balancer:
+
+In the hosted zone, click Create Record.
+Choose A - IPv4 address.
+Select Alias and point to the Application Load Balancer (ALB) or Network Load Balancer (NLB).
+Click Create Record.
+====================================================
+2. Request an SSL Certificate in ACM
+Go to AWS Certificate Manager (ACM):
+
+Choose the correct AWS region.
+Click Request a Certificate > Public Certificate.
+Enter Your Domain Name(s):
+
+Example: example.com and *.example.com (for wildcard).
+Click Next.
+Choose Validation Method (DNS Recommended):
+
+DNS validation is simpler.
+ACM will generate a CNAME record that needs to be added to Route 53.
+Add the CNAME Record:
+
+In Route 53, go to your hosted zone and click Create Record.
+Copy-paste the CNAME details from ACM and save it.
+ACM will automatically validate the domain (can take a few minutes to hours).
+=========================================================================================
+3. Attach SSL Certificate to the Load Balancer
+Go to EC2 > Load Balancers.
+
+Select your Load Balancer.
+Listener Configuration:
+
+Click on the Listeners tab.
+Click Add Listener > HTTPS (443).
+Choose the SSL certificate from ACM.
+Default Action:
+
+Forward requests to your EC2 instances via the target group.
+====================================================================================
+4. Force Redirect HTTP to HTTPS (Optional)
+In the Listeners tab, edit the existing HTTP (80) listener.
+Set the action to Redirect to HTTPS (443).
+==========================================
+5. Test the Setup
+Visit https://example.com.
+The SSL certificate should be active.
+If you see the padlock icon, the SSL is working correctly.
+========================================================
+How It Works
+DNS Routing: When users enter your domain, Route 53 routes the traffic to your Load Balancer.
+SSL/TLS Encryption: The Load Balancer terminates SSL at the edge, decrypts traffic, and forwards it securely to EC2 instances.
+Security: Traffic between users and the Load Balancer is encrypted, ensuring data privacy.

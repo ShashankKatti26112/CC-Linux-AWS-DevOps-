@@ -1,0 +1,111 @@
+
+https://cidr.xyz/
+
+To understand subnetting with different CIDR notations like /16, /17, and /32, it’s helpful to understand the CIDR (Classless Inter-Domain Routing) notation, which indicates the size of a network and how many IP addresses it contains. CIDR is written in the format IP_address/Prefix_Length, where:
+
+IP_address is the starting address of the network.
+Prefix_Length (e.g., /16, /24, /32) specifies how many bits are allocated for the network portion of the address.
+How CIDR Works:
+The number after the / represents how many bits are used for the network part of the address. The remaining bits are used for the host part (to identify individual devices within the network).
+
+Example of IPv4 Address:
+An IPv4 address is 32 bits long, typically written as four octets (e.g., 192.168.0.1).
+=============================================================================================================
+How This Works with Subnet Masks:
+A subnet mask helps you determine which part of an IP address is used for the network and which part is used for the host. It is often written in the same format as CIDR notation, but it uses a 32-bit mask (e.g., 255.255.255.0 for /24).
+
+Subnet Mask Examples:
+255.0.0.0 (for /8):
+
+Network Bits: 8 bits (11111111.00000000.00000000.00000000)
+Host Bits: 24 bits (00000000.11111111.11111111.11111111)
+255.255.255.0 (for /24):
+
+Network Bits: 24 bits (11111111.11111111.11111111.00000000)
+Host Bits: 8 bits (00000000.00000000.00000000.11111111)
+================================================================================================================
+Subnet Mask Notation:
+/8: 8 bits for the network part.
+/16: 16 bits for the network part.
+/24: 24 bits for the network part.
+/32: 32 bits for the network part (individual host).
+Breaking It Down:
+1. /16 (Subnet Mask: 255.255.0.0):
+Prefix Length: 16 bits for the network, leaving 16 bits for the host.
+
+Number of IPs: 
+2
+16
+=
+65
+,
+536
+2 
+16
+ =65,536 IP addresses (64,534 usable for hosts after excluding the network and broadcast addresses).
+
+Example CIDR Block: 10.0.0.0/16
+
+IP range: 10.0.0.0 to 10.0.255.255
+This subnet contains 65,536 IP addresses.
+2. /17 (Subnet Mask: 255.255.128.0):
+Prefix Length: 17 bits for the network, leaving 15 bits for the host.
+
+Number of IPs: 
+2
+15
+=
+32
+,
+768
+2 
+15
+ =32,768 IP addresses (32,766 usable for hosts).
+
+Example CIDR Block: 10.0.0.0/17
+
+IP range: 10.0.0.0 to 10.0.127.255
+This subnet contains 32,768 IP addresses.
+3. /18 (Subnet Mask: 255.255.192.0):
+Prefix Length: 18 bits for the network, leaving 14 bits for the host.
+
+Number of IPs: 
+2
+14
+=
+16
+,
+384
+2 
+14
+ =16,384 IP addresses (16,382 usable for hosts).
+
+Example CIDR Block: 10.0.0.0/18
+
+IP range: 10.0.0.0 to 10.0.63.255
+This subnet contains 16,384 IP addresses.
+4. /24 (Subnet Mask: 255.255.255.0):
+Prefix Length: 24 bits for the network, leaving 8 bits for the host.
+
+Number of IPs: 
+2
+8
+=
+256
+2 
+8
+ =256 IP addresses (254 usable for hosts).
+
+Example CIDR Block: 10.0.0.0/24
+
+IP range: 10.0.0.0 to 10.0.0.255
+This subnet contains 256 IP addresses.
+5. /32 (Subnet Mask: 255.255.255.255):
+Prefix Length: 32 bits for the network, leaving no bits for the host.
+
+Number of IPs: 1 IP address (this is an individual address, not a range).
+
+Example CIDR Block: 10.0.0.1/32
+
+IP range: 10.0.0.1
+This is a single IP address. A /32 is used when you need to specify a particular host in routing tables or firewall rules.

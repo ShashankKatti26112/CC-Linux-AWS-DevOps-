@@ -1,0 +1,75 @@
+Introduction to AWS CLI
+=======================
+The AWS CLI is a tool to interact with AWS services from your terminal. It allows users to control AWS services using commands instead of the AWS Management Console.
+
+Prerequisites
+=============
+AWS Account: Ensure to have an AWS account. 
+Terminal Access: Whether using Windows, macOS, or Linux, make sure have access to a terminal (Command Prompt, PowerShell, or Terminal on macOS/Linux).
+
+Install AWS CLI on Linux
+========================
+https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+
+aws --version--->confirm installation
+
+
+Configuring AWS CLI
+=====================
+Before using the AWS CLI, WE need to configure it with their AWS credentials (Access Key ID, Secret Access Key, region).
+
+   Obtain Access Keys
+   ===================
+    Go to the AWS Management Console.
+    Navigate to IAM (Identity and Access Management).
+    create user and admin policy
+    Create or retrieve an existing Access Key and Secret Access Key under My Security Credentials.
+
+Configure AWS CLI
+=================
+Open the terminal and type:
+
+aws configure
+
+will be prompted to input:
+AWS Access Key ID: (e.g., AKIAIEXAMPLEID)
+AWS Secret Access Key: (e.g., wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY)
+Default region name: (e.g., us-east-1)
+Default output format: Leave as default (json) or change to (text or table).
+
+
+Basic AWS CLI Commands
+=======================
+Check AWS Identity: aws sts get-caller-identity
+List S3 Buckets:    aws s3 ls
+Create a New S3 Bucket: aws s3 mb s3://my-cli-bucket-shreenivas
+Upload a File to S3: aws s3 cp example.txt s3://my-cli-bucket-shreenivas/
+Download a File from S3: aws s3 cp s3://my-clibucket/example.txt ./downloaded_example.txt
+Describe EC2 Instances: aws ec2 describe-instances
+create an Ubuntu EC2 t2.micro instance  
+    aws ec2 run-instances \
+  --image-id ami-xxxxxxxx \
+  --instance-type t2.micro \
+  --key-name MyKeyPair \
+  --security-group-ids sg-xxxxxxxx \
+  --subnet-id subnet-xxxxxxxx \
+  --region us-east-1
+
+verify the instance is running :aws ec2 describe-instances --filters "Name=instance-state-name,Values=running"
+
+Start an EC2 Instance:aws ec2 start-instances --instance-ids i-xxxxxxxxxxxxxxxxx
+stop an EC2 Inatances : aws ec2 stop-instances --instance-ids i-xxxxxxxxxxxxxxxxx
+List IAM Users: aws iam list-users
+Create a New IAM User aws iam create-user --user-name NewUser
+Create a VPC: aws ec2 create-vpc --cidr-block 10.0.0.0/16
+List RDS Instances: aws rds describe-db-instances
+
+Create a Snapshot of an RDS Instance:aws rds create-db-snapshot --db-instance-identifier mydbinstance --db-snapshot-identifier mydbsnapshot
+
+
+
+

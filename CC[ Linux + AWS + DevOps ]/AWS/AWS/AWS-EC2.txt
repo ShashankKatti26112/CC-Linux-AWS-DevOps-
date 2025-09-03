@@ -1,0 +1,189 @@
+AWS EC2 Overview
+=================
+Amazon Elastic Compute Cloud (EC2) is a web service that provides secure, resizable compute capacity in the cloud. It allows users to rent virtual machines (instances) to run applications, enabling scalable deployments based on workload requirements.
+
+EC2 Instance Types--> https://aws.amazon.com/ec2/instance-types/
+
+General Purpose:
+
+Best for applications with balanced compute, memory, and networking resources.
+Examples:
+T4g, T3, T3a (burstable performance for small workloads)
+M6g, M5, M5a, M5n (for balanced workloads)
+
+Compute Optimized:
+Ideal for compute-bound applications that benefit from high-performance processors.
+Examples:
+C7g, C6g, C5, C5a (for compute-heavy tasks such as gaming, HPC, and scientific modeling)
+
+Memory Optimized:
+Designed to deliver fast performance for memory-intensive applications.
+Examples:
+R6g, R5, R5a (for large in-memory databases, big data)
+X1, X1e (for SAP HANA and other large-scale memory applications)
+
+Storage Optimized:
+Suitable for workloads that require high, sequential read and write access to large datasets on local storage.
+Examples:
+I3, I4i, D2 (for databases, big data, data warehousing)
+
+Accelerated Computing:
+Best for applications that require hardware accelerators like GPUs.
+Examples:
+P4, G5 (for machine learning, graphics-intensive applications)
+F1 (for hardware acceleration using FPGAs)
+
+
+
+How to Launch an EC2 Instance
+
+Log in to AWS Console:
+======================
+
+Go to the AWS Management Console, and log in with your credentials.
+Navigate to EC2 Dashboard:
+
+In the AWS Management Console, search for “EC2” and select it from the services menu.
+Launch Instance:
+
+Click the Launch Instance button.
+Choose AMI (Amazon Machine Image):
+
+AMIs are preconfigured templates for your instance. You can choose from:
+Amazon Linux
+Ubuntu
+Windows Server
+Custom AMIs
+Choose Instance Type:
+
+Select an instance type based on your workload requirements (e.g., t2.micro for general-purpose).
+Configure Instance:
+
+Define number of instances, network settings, IAM role, etc. Typically, use the default VPC and subnets for basic setups.
+Add Storage:
+
+Specify the storage size and type (e.g., EBS volumes). The default root volume will typically be enough for simple applications.
+Add Tags (Optional):
+
+Assign tags to help organize and manage your instances (e.g., Key: Name, Value: WebServer).
+Configure Security Groups:
+
+Security groups act as a virtual firewall. Open ports based on your needs (e.g., port 22 for SSH, port 80 for HTTP).
+Review and Launch:
+
+Review the instance configuration and click Launch.
+Select Key Pair:
+
+Choose an existing key pair or create a new one. This key pair will be used for SSH access (Linux) or RDP (Windows).
+Launch:
+
+Click Launch Instances to start the instance.
+Accessing an EC2 Instance
+1. For Linux Instances (SSH access):
+Download the PEM file (key pair) when you launch your instance.
+Open a terminal and run the following command to change the key permissions:
+bash
+Copy code
+chmod 400 your-key.pem
+Use SSH to connect:
+bash
+Copy code
+ssh -i your-key.pem ec2-user@your-instance-public-ip
+
+2. For Windows Instances (RDP access):
+Download the PEM file (key pair).
+Use it to decrypt the Windows Administrator password from the AWS console.
+Use Remote Desktop (RDP) to access the instance:
+Open Remote Desktop and connect to the instance’s public IP address using the decrypted password.
+=====================================================
+AWS Security Groups
+=====================
+
+Definition: Security Groups act as virtual firewalls for EC2 instances to control inbound and outbound traffic. They help secure applications by allowing or restricting network access.
+
+Stateless vs. Stateful: Unlike Network Access Control Lists (NACLs) which are stateless, Security Groups are stateful. This means that if you allow inbound traffic to an instance, the outbound response is automatically allowed.
+
+Rule Structure: Security Groups have rules that define allowed protocols, ports, and IP addresses.
+Inbound Rules: Control incoming traffic.
+Outbound Rules: Control outgoing traffic.
+
+Default Behavior: By default, all inbound traffic is denied, and all outbound traffic is allowed.
+
+Practical Steps
+=================
+Creating a Security Group:
+
+Go to the AWS EC2 Dashboard.
+
+Under Network & Security, select Security Groups.
+Click Create Security Group, name it, and associate it with a VPC.
+
+Set up Inbound Rules (e.g., allow SSH (port 22) for Linux instances or RDP (port 3389) for Windows).
+You can create as many inbound rules as required.
+Assigning a Security Group to an EC2 Instance:
+When launching an EC2 instance, select the created Security Group in the Configure Security Group step.
+
+Updating Rules:
+Modify rules to add/remove specific IPs or ports as needed.
+This can also be done after instance creation to adjust permissions dynamically.
+================================================
+Elastic IP (EIP)
+
+Definition: Elastic IPs are static, public IPv4 addresses associated with AWS accounts and can be attached to instances to provide persistent public IP addresses.
+
+Purpose: Useful for applications that require a fixed IP for external access, allowing for easy association even if instances stop or terminate.
+
+Billing: Elastic IPs are free while in use, but AWS charges for unused EIPs.
+Resilience: EIPs can be reassigned instantly to any instance in the same AWS region, providing high availability and resilience.
+
+Practical Steps
+================
+Allocating an Elastic IP:
+In the EC2 Dashboard, go to Elastic IPs.
+Click Allocate Elastic IP address and allocate a new IP.
+Associating an Elastic IP with an EC2 Instance:
+Select the allocated IP and choose Associate Elastic IP address.
+Choose an instance or network interface to associate with.
+Disassociating and Releasing an Elastic IP:
+To free up an IP, disassociate it from any instances.
+Select the Elastic IP and choose Release Elastic IP address to avoid unnecessary charges.
+=====================================================
+
+Other Details
+=============================
+Elastic IPs:
+Elastic IPs are static IP addresses designed for dynamic cloud computing. You can associate an Elastic IP with an instance so that the instance always has the same public IP.
+
+Auto Scaling:
+EC2 Auto Scaling helps ensure that you have the right number of EC2 instances available to handle the load for your application.
+You can set up Auto Scaling Groups (ASG) to automatically scale out or in depending on traffic.
+
+EC2 Pricing Models:
+====================
+On-Demand: Pay for compute capacity by the hour or second.
+
+Reserved Instances: Commit to a one or three-year term to receive significant discounts.
+
+Spot Instances: Purchase unused EC2 capacity at discounted rates, ideal for fault-tolerant workloads.
+
+Savings Plans: Flexible pricing model offering lower prices on EC2 based on long-term usage.
+
+Differences Between Dedicated Hosts and Dedicated Instances:
+
+Dedicated Hosts: Give you control over the entire physical server and allow you to use software licenses tied to the server's hardware.
+
+Dedicated Instances: Run on hardware dedicated to you, but you don’t have visibility or control over the physical host.
+
+Security Best Practices:
+
+Use IAM roles to grant EC2 instances access to AWS resources without using hardcoded credentials.
+Regularly patch and update your EC2 instances.
+Enable detailed monitoring for better insight into performance and usage.
+Implement a Virtual Private Cloud (VPC) with security groups and network ACLs to control access.
+
+==============================================================================================
+creating new images and from running instances -hands on
+
+AMI- backup form the os level
+snapshot- only backup of volume
+====================================================================================

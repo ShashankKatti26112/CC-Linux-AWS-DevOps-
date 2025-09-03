@@ -1,0 +1,172 @@
+What is a Database?
+====================
+A database is a structured collection of data that is stored electronically and organized for easy access and management. Databases can store any type of data, including words, numbers, images, videos, and files.
+
+Types of databases
+===================
+Relational Databases (SQL)
+NoSQL Databases (e.g., MongoDB)
+In-Memory Databases (e.g., Redis, SAP HANA)
+Document-based, Key-Value, Graph, etc.
+
+What is Amazon RDS?
+Amazon RDS is a fully managed relational database service that supports several database engines, including:
+MySQL
+PostgreSQL
+MariaDB
+Oracle
+SQL Server
+Amazon Aurora (a high-performance, cloud-optimized version of MySQL and PostgreSQL)
+
+Shreeni123!
+
+It handles common database tasks such as backups, patching, monitoring, scaling, and failover.
+
+Key Features of Amazon RDS
+
+Automated Backups: RDS automatically performs backups of your database, allowing you to restore data to any point in time.
+
+High Availability: Using the Multi-AZ (Availability Zone) deployment option, RDS can automatically replicate data across multiple availability zones to ensure high availability in case of failure.
+
+Scalability: You can scale your RDS instance vertically (increasing CPU, memory, storage) with minimal downtime. Some databases like Aurora also offer horizontal scaling.
+
+Security: RDS integrates with AWS Identity and Access Management (IAM) to control who can access the database, supports encryption (at rest and in transit), and allows you to set up VPCs (Virtual Private Clouds) for enhanced security.
+
+Monitoring and Metrics: RDS provides monitoring through Amazon CloudWatch, allowing you to track key performance metrics like CPU, memory, storage, and IOPS (Input/Output Operations per Second).
+
+==========================================
+https://dev.mysql.com/downloads/installer/
+===========================================
+Search for RDS
+Shreeni1234$
+admin
+Shreeni123!
+LGB14GMg9S4NASCXvIgT
+
+databases-->create Database-->standerd create-->MYSQL-->use defaults-->DB instance identifier(Name of the RDS)
+
+give username and password
+
+choose type of DB instance required
+
+============================================
+Step 1: Sign in to AWS Management Console
+Go to the AWS Management Console.
+Log in with your AWS credentials.
+
+Step 2: Navigate to Amazon RDS
+In the AWS Management Console, search for RDS in the search bar.
+Click RDS from the services listed.
+
+Step 3: Launch a New Database Instance
+In the RDS Dashboard, click on the Create database button.
+
+Step 4: Choose the Database Creation Method
+Select Standard create (this method provides the most control over the settings).
+
+Step 5: Select MySQL as the Engine
+Under the Engine options, choose MySQL.
+Select the version of MySQL you want to use (choose the default version or one that suits your requirements).
+
+Step 6: Choose a Use Case (Optional)
+If you're setting up a production environment, choose Production.
+For a test or development environment, choose Dev/Test. (This option allows you to use smaller, less expensive instance types.)
+
+Step 7: Configure the Database Settings
+DB instance identifier: Enter a name for your database (e.g., mydb-instance).
+Master username: Enter the username for the database admin (default is admin, but you can choose another name).
+Master password: Set a strong password for the database admin and confirm it.
+
+Step 8: Choose the DB Instance Class
+Choose the instance class based on your performance needs.
+For light workloads, you can use smaller instance types like db.t3.micro.
+For heavier workloads, choose a more powerful instance type.
+
+Step 9: Configure Storage
+Storage type: Choose between General Purpose SSD, Provisioned IOPS SSD, or Magnetic (General Purpose SSD is fine for most use cases).
+Allocated storage: Specify how much storage you need (e.g., 20 GB).
+Optionally enable storage autoscaling, so your instance automatically scales if more storage is needed.
+
+Step 10: Configure Availability and Durability (Optional)
+For production, consider enabling Multi-AZ deployment for high availability. This creates a standby instance in another Availability Zone for automatic failover.
+Choose the VPC where the instance will reside, and whether the instance should be publicly accessible.
+
+Step 11: Configure Database Settings
+DB parameter group: Leave this as default, unless you need to customize specific database parameters.
+Option group: Also leave this as default unless you need advanced configurations.
+
+Step 12: Configure Connectivity
+Virtual Private Cloud (VPC): Select the VPC where you want to deploy the RDS instance.
+Subnet group: Choose the subnet group (automatically assigned by default).
+Public accessibility: Choose Yes if you want to connect to this database over the internet. Otherwise, select No for private access.
+VPC security group: Choose an existing security group or create a new one. Ensure that the security group allows inbound MySQL traffic on port 3306.
+
+Step 13: Additional Configuration
+Database name: Specify a name for your database, or leave it blank to create the default database.
+Backup retention: Set how many days you want AWS to retain automatic backups.
+Backup window: You can let AWS automatically choose a backup window, or set a preferred backup window.
+Monitoring: Enable Amazon CloudWatch monitoring if you want detailed performance metrics.
+Maintenance: Specify a maintenance window for automatic updates or let AWS choose one.
+
+Step 14: Review and Create
+Review all your settings.
+Click Create database.
+
+Step 15: Wait for Database Creation
+It may take a few minutes for the MySQL RDS instance to be created.
+You can monitor the status from the Databases section in the RDS dashboard.
+
+Step 16: Connect to the RDS MySQL Instance
+Once the instance is created, go to the Databases section in the RDS console.
+
+Find your database instance and click on it to see the Endpoint (DNS name) and port number.
+
+Use the MySQL client, a database management tool like MySQL Workbench, or any application to connect to the instance using:
+
+Endpoint
+Username
+Password
+============================================================================================================
+1. Verify Connection to MySQL
+After connecting, run the following command to verify the connection and see the list of available databases:
+
+SHOW DATABASES;
+
+2. Create a Database
+If you didn’t create a specific database during setup, you can create one now:
+
+CREATE DATABASE demo_db;
+
+Switch to this new database:
+
+USE demo_db;
+
+
+3. Create a Table
+Create a simple table named students to store student information:
+
+CREATE TABLE students (
+    student_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    age INT,
+    major VARCHAR(50)
+);
+
+4. Insert Data into the Table
+Insert some records into the students table:
+
+INSERT INTO students (name, age, major) 
+VALUES ('John Doe', 22, 'Computer Science'),
+       ('Jane Smith', 23, 'Mathematics'),
+       ('Alice Johnson', 21, 'Physics');
+
+5. Retrieve Data from the Table
+Query the students table to display all the records:
+
+SELECT * FROM students;
+
+
+You can show students how to filter data, for example, retrieving students whose age is greater than 22:
+
+
+

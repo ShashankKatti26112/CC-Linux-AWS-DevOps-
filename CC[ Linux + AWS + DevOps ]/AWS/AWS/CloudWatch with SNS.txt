@@ -1,0 +1,33 @@
+Monitoring with CloudWatch
+=============================
+Why?
+CloudWatch monitors your AWS resources and applications in real-time. It can trigger alarms and scale your application automatically based on metrics like CPU utilization, network traffic, etc.or any other actions that you want to take
+
+How?
+Go to CloudWatch Dashboard > Create Alarm.
+Select Metric:
+Choose EC2 > Per-Instance Metrics > CPU Utilization.
+Set thresholds: For example, CPU > 70% triggers an alarm.
+Action: Attach the alarm to your Auto Scaling group to add or remove instances automatically.
+
+sudo yum install stress -y
+
+stress --cpu 80 --timeout 600
+
+
+
+=============================================================================================================================================
+Step 5: Setting Up SNS for Notifications
+Why?
+Simple Notification Service (SNS) sends automated messages (emails, SMS, etc.) when CloudWatch alarms are triggered, keeping you informed about your application’s status.
+
+How?
+Go to SNS Dashboard > Create Topic:
+Name it AutoScalingAlerts.
+Subscribe:
+Add your email address to receive notifications.
+
+Attach SNS to CloudWatch Alarm:
+Configure the CloudWatch alarm to send notifications to your SNS topic when the alarm is triggered.
+====================================================================================================================================
+

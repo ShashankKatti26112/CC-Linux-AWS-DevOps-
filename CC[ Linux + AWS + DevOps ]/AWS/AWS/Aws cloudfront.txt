@@ -1,0 +1,56 @@
+Introduction to AWS CloudFront
+=============================
+What is CloudFront? AWS CloudFront is a Content Delivery Network (CDN) service that delivers content globally with low latency and high transfer speeds. It caches content at edge locations close to users.
+
+Use Case: It is ideal for delivering static files like HTML, CSS, JS, images, and videos. It's also used for APIs or dynamic content with customizable caching.
+
+Key Concepts:
+Edge Locations: Global data centers where content is cached.
+Distributions: The CloudFront resource that tells how content will be delivered.
+Origins: The location of your content (e.g., S3 buckets or web servers)
+
+Setting Up a Demo
+This demo will show how to use CloudFront to distribute content from an S3 bucket globally. We’ll create an S3 bucket, upload content, and set up CloudFront to cache and serve that content.
+
+# create s3 bucket
+#upload index.html file to the created s3
+
+create bucket policy:
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "PublicReadGetObject",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::my-static-website-bucket/*"
+        }
+    ]
+}
+
+goto properties and enable static web hosting
+check website from the browser
+
+Create a CloudFront Distribution
+Set Up a CloudFront Distribution: In this step, we will create a CloudFront distribution with the S3 bucket as the origin.
+
+Go to the AWS Management Console:
+
+Open CloudFront.
+===============
+Click on Create Distribution.
+Under Origin, choose S3 Bucket and select your bucket.
+Set Default Cache Behavior Settings:
+Viewer Protocol Policy: Redirect HTTP to HTTPS (for better security).
+Allowed HTTP Methods: GET, HEAD.
+Leave other settings at default for now, and click Create Distribution.
+Wait for Distribution to Deploy: The CloudFront distribution will take a few minutes to deploy. Once deployed, you’ll get a Domain Name for the CloudFront distribution (e.g., abcd1234.cloudfront.net).
+
+Step 3: Access Content via CloudFront
+Once the distribution is deployed, you can access your content using the CloudFront domain name. Open a browser and go to:
+
+https://dks0kud081yrz.cloudfront.net/index.html
+=========================================================
+A cache is a temporary storage location for data, files, and login details on a device

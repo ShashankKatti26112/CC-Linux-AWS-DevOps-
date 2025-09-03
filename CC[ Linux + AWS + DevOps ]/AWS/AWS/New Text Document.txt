@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cloud Haven</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(120deg, #89f7fe, #66a6ff);
+      animation: gradientShift 10s ease infinite;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: #333;
+    }
+
+    @keyframes gradientShift {
+      0% { background: linear-gradient(120deg, #89f7fe, #66a6ff); }
+      50% { background: linear-gradient(120deg, #fbc2eb, #a6c1ee); }
+      100% { background: linear-gradient(120deg, #89f7fe, #66a6ff); }
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      backdrop-filter: blur(15px);
+      padding: 40px;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      max-width: 500px;
+      width: 90%;
+    }
+
+    h1 {
+      font-size: 2.8em;
+      color: #fff;
+      margin-bottom: 0.4em;
+    }
+
+    p {
+      font-size: 1.2em;
+      color: #eee;
+      margin-bottom: 2em;
+    }
+
+    .cta-button {
+      padding: 14px 28px;
+      font-size: 1.1em;
+      border-radius: 30px;
+      border: none;
+      background: #ffffff;
+      color: #0077b6;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(0, 119, 182, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .cta-button:hover {
+      background: #0077b6;
+      color: white;
+      transform: scale(1.05);
+    }
+
+    footer {
+      position: absolute;
+      bottom: 20px;
+      font-size: 0.9em;
+      color: white;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    }
+
+    .cloud {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 50%;
+      opacity: 0.5;
+      animation: floatClouds 40s linear infinite;
+    }
+
+    .cloud1 {
+      width: 200px;
+      height: 80px;
+      top: 10%;
+      left: -200px;
+      animation-delay: 0s;
+    }
+
+    .cloud2 {
+      width: 150px;
+      height: 60px;
+      top: 50%;
+      left: -150px;
+      animation-delay: 10s;
+    }
+
+    .cloud3 {
+      width: 180px;
+      height: 70px;
+      top: 80%;
+      left: -180px;
+      animation-delay: 20s;
+    }
+
+    @keyframes floatClouds {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(150vw); }
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 2em; }
+      p { font-size: 1em; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cloud cloud1"></div>
+  <div class="cloud cloud2"></div>
+  <div class="cloud cloud3"></div>
+
+  <div class="container">
+    <h1>☁️ Welcome to Cloud Haven</h1>
+    <p>Where your ideas float freely and scale infinitely. Secure, fast, and always on.</p>
+    <button class="cta-button" onclick="alert('Taking you to the Cloud!')">Launch Now</button>
+  </div>
+
+  <footer>© 2025 Cloud Haven. All Rights Reserved.</footer>
+
+</body>
+</html>
