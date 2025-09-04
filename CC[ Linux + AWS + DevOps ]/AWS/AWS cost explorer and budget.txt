@@ -1,0 +1,87 @@
+1. AWS Cost Explorer
+==============================================================
+Purpose: AWS Cost Explorer is a tool for visualizing, analyzing, and understanding your AWS costs and usage over time. It provides graphs, cost breakdowns, and detailed reports to help identify trends and optimize costs.
+
+Features:
+Cost and Usage Reports: View and analyze your AWS costs, organized by service, region, or account.
+Forecasting: Get an estimate of future costs based on historical usage and spending patterns.
+Cost Anomalies: Detect unusual spending patterns or unexpected costs.
+Cost Categories: Group costs into customized categories for easier tracking.
+How to Use AWS Cost Explorer:
+
+Enable Cost Explorer:
+Go to the Billing and Cost Management Console in AWS.
+Select Cost Explorer and click Enable Cost Explorer (if not already enabled).
+View Reports:
+Once enabled, Cost Explorer provides pre-built reports, such as Monthly Spend by Service or Cost and Usage Trends.
+You can also create custom reports to view specific cost breakdowns, such as filtering by specific services, regions, or time periods.
+Forecast Costs:
+In Cost Explorer, navigate to Forecasted costs to view projected spending for the upcoming month based on your usage patterns.
+Analyze Spending by Filters:
+Use filters like Service, Linked Account, Tag, and Region to get detailed breakdowns.
+Set Up Cost Anomaly Detection (Optional):
+Enable Cost Anomaly Detection to receive alerts for unexpected spending. This is helpful for identifying cost spikes and minimizing unexpected charges.
+
+=============================================
+
+2. AWS Budgets
+==================
+Purpose: AWS Budgets is a tool that helps you set custom cost and usage limits, track your spending, and receive alerts when you exceed your budget or approach your limit.
+Features:
+Cost Budgets: Set spending limits for specific services, projects, or accounts.
+Usage Budgets: Set usage thresholds (e.g., a specific number of hours for an EC2 instance) to monitor consumption.
+Reservation Budgets: Track your Reserved Instance (RI) usage to ensure you’re maximizing savings.
+Notifications: Receive alerts via email or SNS when your actual or forecasted spending/usage reaches your specified limits.
+How to Use AWS Budgets:
+
+Create a Budget:
+Go to the AWS Budgets section in the Billing Console.
+Click Create a budget and choose a Budget Type:
+Cost Budget: Set a monthly, quarterly, or yearly spending limit (e.g., $100/month).
+Usage Budget: Set usage limits based on units like hours or storage (e.g., 100 GB/month).
+Reservation Budget: Track your usage of Reserved Instances.
+Set Budget Limits and Thresholds:
+Specify the budget amount or usage limit.
+Set up thresholds for notifications, like alerts at 80% and 100% of the budgeted amount.
+Define Notifications:
+Set up email notifications or send notifications via SNS.
+Customize alerts for actual usage/costs or forecasted (predicted) costs.
+Track Budgets:
+Use the Budgets Dashboard to monitor your budget status and view how close you are to reaching your limit.
+View Reports:
+View detailed reports for each budget to see historical spending patterns and make adjustments as needed.
+Practical Use Cases for AWS Cost Explorer and AWS Budgets
+Monthly Cost Tracking: Use Cost Explorer to understand how your AWS spend is distributed across different services and adjust resources accordingly to reduce costs.
+Set Spending Limits for Teams or Projects: Use AWS Budgets to set specific budgets for teams, projects, or environments (e.g., development vs. production).
+Monitor and Forecast Growth: Use Cost Explorer’s forecasting feature to anticipate future expenses as usage grows.
+Avoid Unexpected Charges: Set up alerts in AWS Budgets to get notified when spending or usage is close to your limit, helping you avoid unexpected overages.
+Cost and Availability
+Cost Explorer: Free to enable and use, though AWS charges apply for some cost and usage reports.
+AWS Budgets: Basic cost and usage alerts are free for the first two budgets. Additional budgets (beyond the first two) and advanced features may incur charges.
+===============================================================================================================================================
+================================================================================================================================
+3. AWS Marketplace Subscriptions
+AWS Marketplace provides a digital catalog with software from third-party vendors. Marketplace Subscriptions allow you to manage and track costs associated with these third-party services.
+
+Step-by-Step Guide: Managing AWS Marketplace Subscriptions
+
+Open AWS Marketplace:
+
+Navigate to the AWS Marketplace through the AWS Console or directly by visiting AWS Marketplace.
+Browse and Subscribe to Software:
+
+Browse through various software categories like security, databases, and machine learning.
+Select software that suits your needs, review its pricing model (hourly, monthly, or annual), and click Continue to Subscribe.
+Confirm Subscription:
+
+Review the software’s terms and conditions and click Subscribe.
+Once subscribed, you can deploy the software directly on your AWS infrastructure or use it according to your license.
+Monitor Marketplace Costs:
+
+Return to the Billing Dashboard in the AWS Console.
+Check the Cost and Usage Reports to view specific charges related to AWS Marketplace subscriptions.
+Manage Active Subscriptions:
+
+Go to the AWS Marketplace Subscriptions section to view active subscriptions.
+You can also cancel any subscriptions you no longer need to avoid ongoing charges.
+Best Practice: Regularly review your active Marketplace subscriptions to ensure they’re still necessary. Deactivate unused subscriptions to reduce costs.
