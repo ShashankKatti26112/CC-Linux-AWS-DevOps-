@@ -1,0 +1,102 @@
+AWS WAF (Web Application Firewall) is a service that helps protect your web applications from common web threats, such as SQL injection, cross-site scripting (XSS), and other security vulnerabilities. It lets you define security rules to control traffic access to your applications, filtering out malicious requests before they reach your infrastructure. AWS WAF is commonly used with services like Amazon CloudFront, Application Load Balancer (ALB), and API Gateway.
+
+Key Features of AWS WAF
+Customizable Rules: Define custom rules to allow, block, or monitor requests based on conditions like IP addresses, query string values, or request size.
+Managed Rules: Use pre-configured rule sets provided by AWS or third-party vendors for common threats, making setup faster and easier.
+Rate-Based Rules: Limit requests from a specific IP if they exceed a threshold, helping prevent Distributed Denial of Service (DDoS) attacks.
+Real-Time Monitoring: View detailed traffic logs and metrics for easy monitoring and analysis through Amazon CloudWatch.
+
+How to Use AWS WAF: Step-by-Step Guide
+Step 1: Set Up an AWS WAF Web ACL
+A Web ACL (Access Control List) defines the security rules that you apply to your web resources.
+
+Go to the AWS WAF Console.
+Choose Web ACLs from the left-hand menu, then click Create web ACL.
+Give the Web ACL a name and select the Region where your application is hosted.
+Select the Resource Type to associate with WAF:
+CloudFront Distribution: If you want to protect global content delivery.
+Application Load Balancer (ALB): For traffic served through ALB.
+API Gateway: To protect your API endpoints.
+Click Next to move to the rules section.
+Step 2: Add Rules to Your Web ACL
+You can add three types of rules: custom rules, managed rules, and rate-based rules.
+
+Custom Rules:
+
+Click Add rules and choose Add my own rules and rule groups.
+Define conditions for this rule. For example, you could block requests from specific IPs, filter based on query strings, or block certain HTTP headers.
+Set the action for the rule (allow, block, or count requests).
+Managed Rules:
+
+Choose Add managed rules and browse through available rules from AWS and third-party vendors.
+AWS provides several managed rule groups for common threats, like SQL injection or XSS. Choose the rules that match your application’s needs.
+Configure the rules, and set them to allow, block, or count requests.
+Rate-Based Rules:
+
+Add a rate-based rule to control traffic from a particular IP if it exceeds a certain threshold (e.g., 1000 requests per 5 minutes).
+Set the threshold and define actions for requests exceeding the rate.
+Step 3: Associate the Web ACL with a Resource
+After configuring your rules, select the resources to associate with this Web ACL.
+Choose the CloudFront distribution, ALB, or API Gateway that you want to protect.
+Click Save and finish to apply the Web ACL.
+Step 4: Test Your Rules
+With AWS WAF, you can set rules to Count mode initially, which lets you monitor requests without blocking them.
+Go to CloudWatch Metrics or AWS WAF Logs (if you enabled logging) to observe traffic patterns and confirm the rules work as expected.
+=========================================================================================================================================
+=========================================================================================================================================
+AWS Shield is a managed Distributed Denial of Service (DDoS) protection service that helps safeguard applications running on AWS from DDoS attacks. It provides automatic detection and mitigation of attacks in real-time, helping keep applications secure and available without requiring manual intervention.
+
+AWS Shield offers two levels of protection:
+
+AWS Shield Standard: Provides free, automatic protection against common, most frequently encountered DDoS attacks for all AWS customers using services like CloudFront, Route 53, and Application Load Balancer.
+AWS Shield Advanced: Provides additional, paid protection with enhanced features, including advanced DDoS mitigation, detailed attack diagnostics, and 24/7 access to the AWS DDoS Response Team (DRT).
+
+Key Features of AWS Shield
+Automatic DDoS Mitigation: Detects and mitigates network and transport layer attacks automatically.
+Enhanced Visibility: Offers detailed attack diagnostics and near real-time notifications (available with Shield Advanced).
+Global Threat Environment Dashboard: Provides visibility into the threat landscape, including trends and attack types seen across AWS.
+DDoS Cost Protection: For Shield Advanced customers, AWS provides financial protection for scaling costs related to a DDoS attack.
+Access to AWS DDoS Response Team (DRT): Experts who help investigate and mitigate ongoing DDoS attacks.
+How to Use AWS Shield
+
+Step 1: Enable AWS Shield Standard
+AWS Shield Standard is enabled automatically for all AWS customers using services like CloudFront, Route 53, and ALB. No action is required to enable it.
+Shield Standard provides basic DDoS protection at no additional cost, focusing on common network and transport layer attacks.
+
+Step 2: Enable AWS Shield Advanced (Optional)
+Prerequisite: Shield Advanced is a paid service and requires a subscription.
+Go to the AWS Shield Console.
+Choose Get started with Shield Advanced.
+Select the resources you want to protect (e.g., CloudFront distributions, Route 53 hosted zones, Elastic IPs, Application Load Balancers, or Global Accelerator).
+Confirm the subscription to activate Shield Advanced for the selected resources.
+
+Step 3: Configure Notifications with CloudWatch (for Shield Advanced)
+Shield Advanced integrates with CloudWatch to provide real-time notifications during a DDoS attack.
+Go to CloudWatch and create an Alarm for AWS Shield events.
+Configure SNS notifications to receive alerts if Shield detects unusual activity or if an attack is mitigated.
+
+Step 4: Set Up AWS WAF for Additional Protection (Optional)
+AWS Shield and AWS WAF work well together. AWS WAF can be configured to add layer 7 (application layer) protection on top of Shield’s network layer protections.
+Use AWS WAF to create custom rules that block malicious traffic patterns, such as IP block lists or rate limiting for specific requests.
+Go to the WAF Console to set up a Web ACL and attach it to your protected resources, such as CloudFront or an Application Load Balancer.
+
+Step 5: Access to AWS DDoS Response Team (DRT) (for Shield Advanced)
+Shield Advanced customers can contact the AWS DDoS Response Team (DRT) for assistance during or after a DDoS attack.
+The DRT can be reached via AWS Support. They help analyze the attack and provide guidance on mitigation techniques.
+
+Step 6: Review Attack Diagnostics and Reports (for Shield Advanced)
+Shield Advanced provides detailed attack diagnostics and reporting after an attack.
+Go to the AWS Shield Console > Protected Resources and view any historical attack data and insights into attack characteristics.
+Use these diagnostics to identify areas for improved security or to review how Shield mitigated the attack.
+
+Use Cases for AWS Shield
+Website Protection: Protects web applications from DDoS attacks that target public-facing endpoints, such as e-commerce sites, streaming services, or social media platforms.
+
+API Protection: Shields API endpoints behind API Gateway or ALB to ensure the availability of backend services.
+Gaming Applications: Prevents high-volume DDoS attacks targeting game servers, which are especially vulnerable to latency and availability issues.
+Financial Applications: Protects financial institutions from volumetric attacks that could interrupt trading, banking, or other financial services.
+
+Pricing of AWS Shield
+AWS Shield Standard: Free for all AWS customers on CloudFront, Route 53, and ALB.
+AWS Shield Advanced: Paid service, charged per protected resource with a monthly fee and additional charges based on data transfer.
+AWS Shield, combined with AWS WAF, provides a comprehensive security layer that is simple to use, highly automated, and scalable. By using Shield, especially with Shield Advanced, you gain peace of mind that your AWS-hosted applications are protected from DDoS attacks with minimal configuration effort.
